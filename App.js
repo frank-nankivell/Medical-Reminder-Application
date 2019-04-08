@@ -7,6 +7,7 @@ import { StyleSheet,
           Image,
           View, 
           ImageBackground,
+          TouchableOpacity,
           Dimensions
         } from 'react-native';
 import UserForm from './components/UserForm';
@@ -21,13 +22,27 @@ const AccessToken = process.env.TOKEN;
 const  { width: WIDTH} = Dimensions.get('window');
 
 export default class App extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      showPass: true,
+      press: false
+    }
+  }
+  showPass = () => {
+    if (this.state.press == false) {
+    this.setState({showPass: false, press: true})
+  } else {
+    this.setState({ showPass: true, press: false})
+    }
+  }
   render() {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}> 
         <View style ={styles.logoContainer}>
           <Image source={logo} style ={styles.logo}/>
           <Text style={styles.logoText}> Participant App </Text>
-          <Text style={styles.standardText}> find out about your genomic results </Text>
+          <Text style={styles.standardText}> find out about your genomic results  </Text>
         </View>
 
         <View style ={styles.inputContainer}>
@@ -47,11 +62,21 @@ export default class App extends React.Component {
             <TextInput
                 style={styles.input}
                 placeholder={'Password'}
-                secureTextEntry={true}
+                secureTextEntry={this.state.showPass}
                 placeholderTextColor={'rgba(255,255,255,0.7)'}
                 underLineColorAndroid='transparent'
               />
+
+              <TouchableOpacity style={styles.btnEye}
+                onPress={this.showPass.bind(this)}>
+                <Icon name={this.state.press == false ? 'ios-eye' : 'ios-eye-off'} 
+                    size={26} color={'rgba(255,255,255,0.7)'}
+                />
+              </TouchableOpacity>
              </View>
+             <TouchableOpacity style={styles.btnLogin}>
+                <Text style={styles.text}>Login</Text>
+              </TouchableOpacity>
       </ImageBackground>
     )
   }
@@ -74,7 +99,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   logoContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 50
   },
   logo: {
     width: 120,
@@ -88,11 +114,15 @@ const styles = StyleSheet.create({
     opacity: 2
   },
   standardText: {
-    color: '#BA55D3', 
-    fontSize: 15,
-    fontWeight: '700',
+    color: 'black', 
+    fontSize: 20,
+    fontWeight: '500',
     marginTop: 15,
     opacity: 2
+  },
+  inputContainer: {
+    marginTop: 50,
+    marginBottom: 10
   },
   input: {
     width: WIDTH -55,
@@ -104,9 +134,31 @@ const styles = StyleSheet.create({
     color: 'white',
     marginHorizontal: 25
   },
-  inputIcon :{
+  inputIcon: {
     position: 'absolute',
     top: 10,
-    left: 37,
+    left: 37
+  },
+  btnEye: {
+    position: 'absolute',
+    top: 10,
+    left: 337
+  },
+  btnLogin: {
+    width: WIDTH -55,
+    height: 45,
+    borderRadius: 45,
+    backgroundColor: '#BA55D3',
+    justifyContent: 'center',
+    marginTop: 30,
+    opacity: 0.75
+  },
+  text: {
+    color: 'white',
+    fontSize: 16,
+
+
+    textAlign: 'center',
+
   }
 });
