@@ -1,4 +1,10 @@
 
+to open
+'open -a Simulator; expo start'
+
+next on the list: 
+https://stackoverflow.com/questions/53367195/invariant-violation-the-navigation-prop-is-missing-for-this-navigator
+
 ## What is the application? 
 App name =
 
@@ -57,3 +63,7 @@ Notes from Kevin
 auth based on http header
 key= 'Authorization'
 value 'Bearer ' + token
+
+to do:
+react navigation tutorial:
+https://codeburst.io/ricky-figures-it-out-simple-react-native-tabnavigator-using-react-navigation-592945a3b211
