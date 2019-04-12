@@ -7,7 +7,7 @@ import {
 class Second extends Component {
     render() {
         return (
-            <ScrollView>\
+            <ScrollView>
                 <Text style={styles.text}> Second Page </Text>
             </ScrollView>
         );

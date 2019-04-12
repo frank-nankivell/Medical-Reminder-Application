@@ -5,82 +5,47 @@ import { StyleSheet,
           Text,
           TextInput,
           Image,
+          Button,
           View, 
           ImageBackground,
           TouchableOpacity,
+          AsyncStorage,
           Dimensions
         } from 'react-native';
 
 // import UserForm from './components/UserForm';
-import bgImage from '../images/background.jpg'
-import logo from '../images/dna-purple.png'
+
+import bgImage from '../images/background.jpg';
+import logo from '../images/dna-purple.png';
 
 
 const  { width: WIDTH} = Dimensions.get('window');
 
 export default class Login extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      showPass: true,
+      press: false
 
-    state = {
-        username: '',
-        password: '',
-        isLoggingIn: false,
-        message: '',
-        showPass: true,
-        press: false
     }
+  }
 
-
-    _userLogin = () => {
-
-        this.setState({ isLoggingIn: true, message: '' });
-
-        var params = {
-            username: this.state.username,
-            password: this.state.password,
-            grant_type: 'password'
-        };
-
-        var formBody = [];
-        for (var property in params) {
-            var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(params[property]);
-            formBody.push(encodedKey + "=" + encodedValue);
-        }
-        formBody = formBody.join("&");
-
-        var proceed = false;
-        fetch("https://"+Environment.CLIENT_API+"/oauth/token", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formBody
-            })
-            .then((response) => response.json())
-            .then((response) => {
-                if (response.status==200) proceed = true;
-                else this.setState({ message: response.message });
-            })
-            .then(() => {
-                this.setState({ isLoggingIn: false })
-                if (proceed) this.props.onLoginPress();
-            })
-            .catch(err => {
-				this.setState({ message: err.message });
-				this.setState({ isLoggingIn: false })
-			});
+  // Method to present password to user when selecting ico
+  showPass = () => {
+    if (this.state.press == false) {
+    this.setState({showPass: false, press: true})
+  } else {
+    this.setState({ showPass: true, press: false})
     }
+  }
 
-    clearUsername = () => {
-        this._username.setNativeProps({ text: '' });
-        this.setState({ message: '' });
-    }
-
-    clearPassword = () => {
-        this._password.setNativeProps({ text: '' });
-        this.setState({ message: '' });
-    }
-    
+  // Method to 
+  _signInAsync = async () => {
+    await AsyncStorage.setItem('userToken', 'abc');
+    this.props.navigation.navigate('Main');
+  };
+  
   render() {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}> 
@@ -120,7 +85,8 @@ export default class Login extends React.Component {
               </TouchableOpacity>
              </View>
              <TouchableOpacity style={styles.btnLogin}>
-                <Text style={styles.text}>Login</Text>
+                <Button title="Login" color="white" onPress={this._signInAsync.bind(this)}>
+                </Button>
               </TouchableOpacity>
       </ImageBackground>
     )
@@ -201,8 +167,6 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontSize: 16,
-
-
     textAlign: 'center',
 
   }

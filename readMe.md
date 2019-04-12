@@ -67,3 +67,25 @@ value 'Bearer ' + token
 to do:
 react navigation tutorial:
 https://codeburst.io/ricky-figures-it-out-simple-react-native-tabnavigator-using-react-navigation-592945a3b211
+
+single dot is this directory
+
+two dots is preceding 
+
+
+Auth:
+
+https://snack.expo.io/@react-navigation/auth-flow-v3 use this
+
+https://medium.com/building-with-react-native/what-is-asyncstorage-in-react-native-and-how-you-to-use-it-with-app-state-manager-1x09-b8c636ce5f6e
+
+fix logout screen
+
+
+
+Focus on answering these questions this evening. 
+
+
+1.	Why it is suited to be a mobile application
+2.	How it has been designed for mobile use
+3.	How it works (a simple explanation of the code)

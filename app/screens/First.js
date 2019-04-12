@@ -7,7 +7,7 @@ import {
 class First extends Component {
     render() {
         return (
-            <ScrollView>\
+            <ScrollView>
                 <Text style={styles.text}> First Page </Text>
             </ScrollView>
         );
