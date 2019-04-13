@@ -21,3 +21,23 @@ ADR's set out choice of technologies and present reasoning as to why the applica
 
 The about section sets out the application use acase,  the design of the application and a brief overview of how the applications code is used to deliver the application.
 
+
+
+Notes: 
+
+#This api call is for rare disease
+
+https://api.nhs.uk/data/services/srv0046/postcode/tq25aw/?distance=50
+
+GET https://api.nhs.uk/data/services/srv0046/postcode/{postcode}/?{distance} HTTP/1.1
+Host: api.nhs.uk
+subscription-key: key 
+
+
+#This api call is for cancer
+
+https://api.nhs.uk/data/services/srv0118/postcode/{postcode}/?distance={distance}
+
+GET https://api.nhs.uk/data/services/srv0118/postcode/{postcode}/?distance={distance} HTTP/1.1
+Host: api.nhs.uk
+subscription-key: key 

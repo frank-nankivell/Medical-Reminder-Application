@@ -6,12 +6,13 @@ import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons'
 import {Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator, tabBarOptions} from 'react-navigation';
 
-import HomeScreen from  '../screens/Home';
-import FirstScreen from  '../screens/First';
-import SecondScreen from  '../screens/Second';
+import HomeScreen from  '../screens/mainScreens/Home';
+import Workflow from  '../screens/mainScreens/Workflow';
+import Results  from  '../screens/mainScreens/Results';
+import Panels from '../screens/mainScreens/Panels';
+
 
 import logo from '../images/dna-purple.png';
-
 
 const HomeStack = createStackNavigator({
     Home: HomeScreen,
@@ -26,13 +27,13 @@ const HomeStack = createStackNavigator({
 };
 
 
-  const FirstStack = createStackNavigator({
-    First: FirstScreen,
+  const WorkflowStack = createStackNavigator({
+    Workflow: Workflow,
 
     
   });
   
-  FirstStack.navigationOptions = {
+  WorkflowStack.navigationOptions = {
     tabBarLabel: 'Workflow',
     tabBarIcon: ({ tintColor }) => (
       <Icon name="md-reorder" size={35}/>
@@ -40,22 +41,37 @@ const HomeStack = createStackNavigator({
   };
 
   // Results Navigation 
-  const SecondStack = createStackNavigator({
-    Second: SecondScreen,
+  const ResultStack = createStackNavigator({
+    Results: Results,
   });
   
-  SecondStack.navigationOptions = {
+  ResultStack.navigationOptions = {
     tabBarLabel: 'Results',
     tabBarIcon: ({ tintColor }) => (
       <Icon2 name="dna" size={35}/>
     )
   };
+
+    // Panels Navigation 
+    const PanelsStack = createStackNavigator({
+      Panels: Panels,
+    });
+    
+    PanelsStack.navigationOptions = {
+      tabBarLabel: 'Panels',
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name= "ios-list-box" size={35}/>
+      )
+    };
+    
   
   
   export default createBottomTabNavigator({
     HomeStack,  
-    FirstStack,
-    SecondStack,
+    WorkflowStack,
+    ResultStack,
+    PanelsStack,
+
   }, {
   tabBarPosition: 'bottom',
     tabBarOptions: {
@@ -83,16 +99,3 @@ const HomeStack = createStackNavigator({
 
 );
   
-  /*const screen = tabBarOptions({
-        activeTintColor: 'bottom',
-        activeBackgroundColor: true,
-        inactiveTintColor: {
-        activeBackgroundColor: 'pink',
-        inactiveTintColor: 'grey',
-        labelStyle: {
-            fontSize: 22,
-            padding:12
-            }
-        }
-    });
-    */

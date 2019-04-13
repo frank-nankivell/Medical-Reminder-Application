@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/Ionicons'
+import floatingBackButton from '../../components/floatingBackButton';
 import { StyleSheet, 
           Text,
           TextInput,
@@ -15,8 +16,8 @@ import { StyleSheet,
 
 // import UserForm from './components/UserForm';
 
-import bgImage from '../images/background.jpg';
-import logo from '../images/dna-purple.png';
+import bgImage from '../../images/background.jpg';
+import logo from '../../images/dna-purple.png';
 
 
 const  { width: WIDTH} = Dimensions.get('window');
@@ -26,7 +27,8 @@ export default class Login extends React.Component {
     super()
     this.state = {
       showPass: true,
-      press: false
+      press: false, 
+      back: false,
 
     }
   }
@@ -40,15 +42,23 @@ export default class Login extends React.Component {
     }
   }
 
-  // Method to 
+  // Method to set token and login
   _signInAsync = async () => {
     await AsyncStorage.setItem('userToken', 'abc');
     this.props.navigation.navigate('Main');
   };
+
+  _backButton  = () => {
+  if (this.state.back == true) {
+    this.props.navigation.navigate('Auth');
+  }
+};
+
   
   render() {
     return (
-      <ImageBackground source={bgImage} style={styles.backgroundContainer}> 
+      <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+
         <View style ={styles.logoContainer}>
           <Image source={logo} style ={styles.logo}/>
           <Text style={styles.logoText}> Participant App </Text>
@@ -88,11 +98,18 @@ export default class Login extends React.Component {
                 <Button title="Login" color="white" onPress={this._signInAsync.bind(this)}>
                 </Button>
               </TouchableOpacity>
+
       </ImageBackground>
     )
   }
 };
 const styles = StyleSheet.create({
+  btnBack: {
+    alignSelf: 'flex-end',
+    position: 'absolute',
+    bottom: 35,
+    left:0,
+  },
   item: {
     flex: 1,
     alignSelf: 'stretch',
@@ -168,6 +185,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
-
   }
 });

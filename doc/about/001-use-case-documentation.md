@@ -1,6 +1,12 @@
 
 
 ## What is the application? 
+
+Key piece of documentation to press on with why the application is extensible and savable with states.
+
+Doesnt' necessarily mean that authenticate to platforms -  but that would also give marks
+
+
 App name =
 
 This app is an app focused at alerting users to where samples are within a sample piepline. 

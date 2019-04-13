@@ -4,11 +4,11 @@ import {
     Text,
     StyleSheet } from 'react-native';
 
-class First extends Component {
+class Second extends Component {
     render() {
         return (
             <ScrollView>
-                <Text style={styles.text}> First Page </Text>
+                <Text style={styles.text}> Results </Text>
             </ScrollView>
         );
     }
@@ -22,4 +22,4 @@ const styles = StyleSheet.create ({
             marginTop: 300
         },
 });
-export default First;
+export default Second;

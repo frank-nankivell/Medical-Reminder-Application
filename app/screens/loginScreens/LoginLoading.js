@@ -8,7 +8,7 @@ import {
   Text,
 } from 'react-native';
 
-import logo from '../images/dna-purple.png';
+import logo from '../../images/dna-purple.png';
 
 class AuthLoadingScreen extends React.Component {
     constructor() {

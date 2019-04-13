@@ -1,15 +1,15 @@
 import { createStackNavigator } from 'react-navigation'
 import React from 'react';
-import Login from  '../screens/loginScreens/Login';
+import Ordering from  '../screens/orderScreens/OrderHome';
 import LoginLoading from  '../screens/loginScreens/LoginLoading';
 
-const LoggedOutNavigator = createStackNavigator({
-  Login: {
-    screen: Login
+const OrderNavigator = createStackNavigator({
+  OrderHome: {
+    screen: Ordering
   },
   Loading: {
     screen: LoginLoading
   }
 });
 
-export default LoggedOutNavigator
+export default OrderNavigator
