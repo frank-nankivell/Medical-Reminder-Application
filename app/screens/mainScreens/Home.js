@@ -11,6 +11,7 @@ import {
     StyleSheet } from 'react-native';
 
 import logo from '../../images/dna-purple.png';
+import bgImage from '../../images/background.jpg';
 
 class Home extends Component {
     constructor() {
@@ -36,6 +37,8 @@ class Home extends Component {
         }
 
     return (
+        <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+
         <ScrollView>
         <Text style={styles.text}> Participant App </Text>
 
@@ -48,6 +51,7 @@ class Home extends Component {
             <Button title="sign me out" onPress={() => this.props.navigation.navigate('Auth')}/>
         </View>
         </ScrollView>
+        </ImageBackground>
         );
     }
 };
@@ -72,6 +76,13 @@ const styles = StyleSheet.create ({
     logoContainer: {
         alignItems: 'center',
         marginBottom: 50
+      },
+      backgroundContainer: {
+        flex: 1,
+        width: null, 
+        height: null,
+        justifyContent: 'center',
+        alignItems: 'center'
       }
 
 

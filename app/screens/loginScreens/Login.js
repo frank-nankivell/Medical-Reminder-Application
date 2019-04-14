@@ -16,7 +16,7 @@ import { StyleSheet,
 
 // import UserForm from './components/UserForm';
 
-import bgImage from '../../images/background.jpg';
+import bgImage from '../../images/background-black.png';
 import logo from '../../images/dna-purple.png';
 
 
