@@ -41,7 +41,7 @@ export default class Splash extends Component {
                     raised
                     style ={styles.logo}
                     title = "Find your local healthcare centre"
-                    color="#BA55D3"
+                    color="rgba(0,0,0,0.5)"
                     onPress={this._orderTest.bind(this)}
                     />
                </TouchableOpacity>
@@ -50,7 +50,7 @@ export default class Splash extends Component {
                     raised
                     style ={styles.buttonStyler}
                     title = "Login to see access your dosage"
-                    color="#BA55D3"
+                    color="rgba(0,0,0,0.5)"
                     onPress={this._navSignIn.bind(this)}
                     />
                   </TouchableOpacity>
@@ -76,12 +76,12 @@ const styles = StyleSheet.create ({
         height: null,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#00B7EB'
+        backgroundColor: '#6EC3CF'
       },
       text: 
         {
       fontSize: 50,
-      color: '#00B7EB',
+      color: 'rgba(0,0,0,0.5)',
       fontWeight: 'bold',
       textAlign: 'center',
       marginTop: 300

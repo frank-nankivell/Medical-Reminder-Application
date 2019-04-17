@@ -59,8 +59,8 @@ export default class Login extends React.Component {
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
 
         <View style ={styles.logoContainer}>
-          <Text style={styles.logoText}> Participant App </Text>
-          <Text style={styles.standardText}> find out about your genomic results  </Text>
+          <Text style={styles.logoText}> Medical reminder app </Text>
+          <Text style={styles.standardText}> Login to update and add to your reminders!  </Text>
         </View>
 
         <View style ={styles.inputContainer}>
@@ -133,14 +133,14 @@ const styles = StyleSheet.create({
     height: 120,
   },
   logoText: {
-    color: '#BA55D3', 
+    color: 'white', 
     fontSize: 30,
     fontWeight: '600',
     marginTop: 10,
     opacity: 2
   },
   standardText: {
-    color: 'black', 
+    color: 'rgba(0,0,0,0.5)', 
     fontSize: 20,
     fontWeight: '500',
     marginTop: 15,
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     width: WIDTH -55,
     height: 45,
     borderRadius: 45,
-    backgroundColor: thirdcolor,
+    backgroundColor: '#4EEEFF',
     justifyContent: 'center',
     marginTop: 30,
     opacity: 0.75

@@ -10,20 +10,24 @@ import {
     ImageBackground,
     StyleSheet } from 'react-native';
 
-import bgImage from '../../images/background1.jpg';
 
+import List from '../../components/List';
+import bgImage from '../../images/background1.jpg';
+import Header from '../../components/Header';
+const headerTitle = 'Your Medication Reminders';
 class Home extends Component {
     constructor() {
         super()
         this.state = {
 
           loggedin: true,
-          press: false
+          press: false,
+          allItems: {}
     
         }
       }
     render() {
-
+        const { inputValue, loadingItems, allItems } = this.state;
 
     _signOutAsync = async () => {
         try {
@@ -37,19 +41,33 @@ class Home extends Component {
 
     return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+        <View style={styles.centered}>
+              <Header title={headerTitle} />
+        </View>
 
         <ScrollView>
         <Text style={styles.text}> Participant App </Text>
-
-
-        <View style ={styles.logoContainer}>
-            <Image source={logo} style ={styles.logo}/>
-        </View>
-        
         <View style ={styles.buttonStyler}>
             <Button title="sign me out" onPress={() => this.props.navigation.navigate('Auth')}/>
         </View>
         </ScrollView>
+
+        <View style={styles.list}>
+            <ScrollView contentContainerStyle={styles.scrollableList}>
+                {Object.values(allItems)
+                .reverse()
+                .map(item => (
+                    <List
+                    key={item.id}
+                    {...item}
+                    deleteItem={this.deleteItem}
+                    completeItem={this.completeItem}
+                    incompleteItem={this.incompleteItem}
+                    />
+                ))}
+            </ScrollView>
+            </View>
+
         </ImageBackground>
         );
     }

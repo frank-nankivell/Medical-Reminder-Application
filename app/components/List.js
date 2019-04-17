@@ -14,7 +14,7 @@ import {
   circleInactive,
   circleActive,
   deleteIconColor
-} from '../utils/Colors';
+} from '../constants/colors';
 const { height, width } = Dimensions.get('window');
 class List extends Component {
   onToggleCircle = () => {

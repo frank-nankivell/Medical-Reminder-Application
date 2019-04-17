@@ -54,7 +54,7 @@ const HomeStack = createStackNavigator({
   tabBarPosition: 'bottom',
     tabBarOptions: {
       activeTintColor: 'pink',
-      activeBackgroundColor: '#BA55D3',
+      activeBackgroundColor: '#6EC3CF',
       pressOpacity: 0.75,
       inactiveTintColor: 'white',
       size: 25,
@@ -63,7 +63,7 @@ const HomeStack = createStackNavigator({
       showLabel: true,
       showIcon: true,
       style: {
-        backgroundColor: '#BA55D3',
+        backgroundColor: '#6EC3CF',
         size: 25,
         paddingVertical: 10,
         opacity:0.75,

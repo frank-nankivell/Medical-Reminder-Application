@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
-import { inputPlaceholder } from '../constants/colors';
+import { inputPlaceholder, tintColor, lightWhite} from '../constants/colors';
 const InputText = ({ inputValue, onChangeText, onDoneAddItem}) => (
   <TextInput
     style={styles.input}
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingRight: 15,
     fontSize: 34,
-    color: '#4EEEFF',
+    color: tintColor,
     fontWeight: '500'
   }
 });
