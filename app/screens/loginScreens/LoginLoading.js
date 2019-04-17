@@ -8,7 +8,6 @@ import {
   Text,
 } from 'react-native';
 
-import logo from '../../images/dna-purple.png';
 
 class AuthLoadingScreen extends React.Component {
     constructor() {
@@ -24,8 +23,6 @@ class AuthLoadingScreen extends React.Component {
       // screen will be unmounted and thrown away.
       this.props.navigation.navigate(userToken ? 'App' : 'Auth');
     };
-
-    
   
     // Render any loading content that you like here
     render() {

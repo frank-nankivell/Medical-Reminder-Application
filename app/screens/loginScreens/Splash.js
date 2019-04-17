@@ -10,7 +10,6 @@ import {
     TouchableOpacity,
     StyleSheet } from 'react-native';
 
-import logo from '../../images/dna-purple.png';
 const  { width: WIDTH} = Dimensions.get('window');
 
 export default class Splash extends Component {
@@ -28,7 +27,7 @@ export default class Splash extends Component {
   };
 
   _onPressAbout() {
-    Alert.alert('This is a Participant app for Genomic tests. If you have already ordered a test then please login to check your results, otherwise order a test today and sign up!')
+    Alert.alert('This is an application for managing your medicine. In an emergency you can use our healthcare finder, otherwise login to update your medicine dosage and check if you are on track with your dosage!')
   }
 
 
@@ -36,14 +35,12 @@ export default class Splash extends Component {
 
             return (
               <View style ={styles.backgroundContainer}>
-                <Image 
-                    source={logo}  
-                    style ={styles.logo}/>
+      
                 <TouchableOpacity style={styles.btnTest}>
                     <Button
                     raised
                     style ={styles.logo}
-                    title = "Order a genetic test"
+                    title = "Find your local healthcare centre"
                     color="#BA55D3"
                     onPress={this._orderTest.bind(this)}
                     />
@@ -52,7 +49,7 @@ export default class Splash extends Component {
                     <Button
                     raised
                     style ={styles.buttonStyler}
-                    title = "Login to check your results"
+                    title = "Login to see access your dosage"
                     color="#BA55D3"
                     onPress={this._navSignIn.bind(this)}
                     />
@@ -79,12 +76,12 @@ const styles = StyleSheet.create ({
         height: null,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#BA55D3'
+        backgroundColor: '#00B7EB'
       },
       text: 
         {
       fontSize: 50,
-      color: '#BA55D3',
+      color: '#00B7EB',
       fontWeight: 'bold',
       textAlign: 'center',
       marginTop: 300

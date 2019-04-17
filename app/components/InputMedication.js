@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
-import { inputPlaceholder } from '../constants/colors';
-const Input = ({ inputValue, onChangeText, onDoneAddItem }) => (
+import { thirdColor } from '../constants/colors';
+const InputMedication = ({ inputDosage, onChangeDosage, onDoneAddDosage, }) => (
   <TextInput
     style={styles.input}
-    inputValue={inputValue}
-    onChangeText={onChangeText}
-    placeholder="enter your medication to be reminded about"
-    placeholderTextColor={inputPlaceholder}
+    inputDosage={inputDosage}
+    onChangeDosage={onChangeDosage}
+    placeholder='enter dosage'
+    placeholderTextColor={thirdColor}
     multiline={true}
     autoCapitalize="sentences"
     underlineColorAndroid="transparent"
@@ -16,7 +16,7 @@ const Input = ({ inputValue, onChangeText, onDoneAddItem }) => (
     returnKeyType="done"
     autoCorrect={false}
     blurOnSubmit={true}
-    onSubmitEditing={onDoneAddItem}
+    onSubmitEditing={onDoneAddDosage}
   />
 );
 const styles = StyleSheet.create({
@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingRight: 15,
     fontSize: 34,
-    color: 'white',
+    color: '#68E7FA',
     fontWeight: '500'
   }
 });
-export default Input;
+export default InputMedication;

@@ -1,5 +1,6 @@
 const tintColor = '#BA55D3';
 const textColor = '#BA55D3';
+const thirdColor = '#4EEEFF'
 
 
 const primaryStart = '#f18a69';
@@ -18,6 +19,7 @@ export const deleteIconColor = '#bc2e4c';
 export default {
   tintColor,
   textColor,
+  thirdColor,
   tabIconDefault: '#ccc',
   tabIconSelected: tintColor,
   tabBar: '#fefefe',

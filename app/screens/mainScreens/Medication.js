@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import Header from '../../components/Header';
-import Input from '../../components/InputText';
 import { LinearGradient } from 'expo';
 import color from '../../constants/colors';
+import InputMedication from '../../components/InputMedication';
+import InputText from '../../components/InputText';
 
-const input1  = 'drugs enter em'
 import {
     ScrollView,
     Text,
@@ -12,23 +12,23 @@ import {
     StyleSheet } from 'react-native';
 const headerTitle = 'Medication Reminder';
 
-class First extends Component {
+class Medication extends Component {
     constructor() {
         super()
 
     this.state = {
-        inputValue: '',
-        input1: 'medication reminder'
+        inputValue: ''
     };
 };
     newInputValue = value => {
         this.setState({
-          inputValue: value
+          inputValue: value,
+          inputDosage: value
         });
       };
 
     render() {
-        const { inputValue } = this.state;
+        const { inputValue, inputDosage } = this.state;
         return (
             <LinearGradient
             colors={[color.tintColor, 'white']}
@@ -37,7 +37,8 @@ class First extends Component {
               <Header title={headerTitle} />
             </View>
             <View style={styles.inputContainer}>
-              <Input inputValue={inputValue} placeholder={input1} onChangeText={this.newInputValue} />
+              <InputText inputValue={inputValue} onChangeText={this.newInputValue} />
+              <InputMedication inputValue={inputDosage} onChangeText={this.newInputValue} />
             </View>
           </LinearGradient>
         );
@@ -64,4 +65,4 @@ const styles = StyleSheet.create ({
             paddingLeft: 15
         },
 });
-export default First;
+export default Medication

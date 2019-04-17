@@ -13,8 +13,7 @@ import {
     TouchableOpacity,
     StyleSheet } from 'react-native';
 
-import logo from '../../images/dna-purple.png';
-import bgImage from '../../images/background.jpg';
+import bgImage from '../../images/background2.jpg';
 import t from 'tcomb-form-native';
 import createIconSetFromFontello from '@expo/vector-icons/createIconSetFromFontello';
 
@@ -98,7 +97,7 @@ const options = {
 
   
 
-class OrderHome extends Component {
+class LocationHome extends Component {
     
     constructor() {
         super()
@@ -157,7 +156,6 @@ class OrderHome extends Component {
     
 
 // method to render values from 
-
     _onPressQuestion() {
         Alert.alert('Full terms and conditions available on our website and www.com. Test ordering form will not provide full test but access to services where blood can be taken')
       };
@@ -188,8 +186,6 @@ class OrderHome extends Component {
               </Text>
               </View>
               <ListView dataSource={this.state.names} renderRow={this.renderRow.bind(this)} />
-
-
               <View style={styles.container}>
               <Text> The API results go here
                 {details}
@@ -319,4 +315,4 @@ const styles = StyleSheet.create ({
 
 
 });
-export default OrderHome;
+export default LocationHome;

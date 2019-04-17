@@ -10,8 +10,7 @@ import {
     ImageBackground,
     StyleSheet } from 'react-native';
 
-import logo from '../../images/dna-purple.png';
-import bgImage from '../../images/background.jpg';
+import bgImage from '../../images/background1.jpg';
 
 class Home extends Component {
     constructor() {

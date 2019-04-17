@@ -3,14 +3,14 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import LoggedOutNavigator from './LoggedOutNavigator';
-import OrderNavigator from './OrderNavigator';
+import locationNavigator from './LocationNavigator';
 import SplashNavigator from './SplashNavigator';
 
 export default createAppContainer(createSwitchNavigator({
   Splash: SplashNavigator,
   Auth: LoggedOutNavigator, // logged out Navigator
   Main: MainTabNavigator,
-  Order: OrderNavigator
+  Location: locationNavigator
 },
 // logged in Navigator
 ));

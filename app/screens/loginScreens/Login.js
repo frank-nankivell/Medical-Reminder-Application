@@ -1,5 +1,6 @@
 import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+import thirdcolor from '../../constants/colors'
 import Icon from 'react-native-vector-icons/Ionicons'
 import floatingBackButton from '../../components/floatingBackButton';
 import { StyleSheet, 
@@ -16,9 +17,7 @@ import { StyleSheet,
 
 // import UserForm from './components/UserForm';
 
-import bgImage from '../../images/background-black.png';
-import logo from '../../images/dna-purple.png';
-
+import bgImage from '../../images/background2.jpg';
 
 const  { width: WIDTH} = Dimensions.get('window');
 
@@ -60,7 +59,6 @@ export default class Login extends React.Component {
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
 
         <View style ={styles.logoContainer}>
-          <Image source={logo} style ={styles.logo}/>
           <Text style={styles.logoText}> Participant App </Text>
           <Text style={styles.standardText}> find out about your genomic results  </Text>
         </View>
@@ -176,7 +174,7 @@ const styles = StyleSheet.create({
     width: WIDTH -55,
     height: 45,
     borderRadius: 45,
-    backgroundColor: '#BA55D3',
+    backgroundColor: thirdcolor,
     justifyContent: 'center',
     marginTop: 30,
     opacity: 0.75
