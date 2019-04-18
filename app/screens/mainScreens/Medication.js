@@ -4,25 +4,35 @@ import { LinearGradient } from 'expo';
 import color from '../../constants/colors';
 import lightWhite from '../../constants/colors';
 import List from '../../components/List';
-import Button from '../../components/Button';
+import ButtonNew from '../../components/Button';
 import InputMedication from '../../components/InputMedication';
 import uuid from 'uuid/v1';
 import InputDate from '../../components/InputDate'
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
-const currentDate = new Date().getDate();
-
+import { Calendar, 
+        CalendarList, 
+        Agenda } from 'react-native-calendars'
 import InputText from '../../components/InputText';
 import bgImage from '../../images/background1.jpg';
 import {
+    Button,
     DatePickerIOS,
     ScrollView,
+    Dimensions,
     Text,
     View,
+    Picker,
+    TouchableOpacity,
     ActivityIndicator,
     AsyncStorage,
     ImageBackground,
     StyleSheet } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+
+
 const headerTitle = 'Medication Reminder';
+const currentDate = new Date().getDate();
+const  { width: WIDTH} = Dimensions.get('window');
+
 
 class Medication extends Component {
     constructor() {
@@ -178,50 +188,60 @@ class Medication extends Component {
             <ImageBackground source={bgImage} style={styles.backgroundContainer}>
             <View style={styles.centered}>
               <Header title={headerTitle} />
-
+            </View>
+            <View>
+              <Text> Below enter your medication dosage and end date to create a reminder </Text>
             </View>
             <View style={styles.inputContainer}>
               <InputText 
                 inputValue={inputValue} 
-                onChangeText={this.newInputValue} 
-                onDoneAddItem={this.onDoneAddItem}/>
+                onChangeText={this.newInputValue} />
 
-              <InputMedication 
-                inputDosage={inputDosage} 
-                onChangeText={this.newInputDosage}
-                onDoneAddItem={this.onDoneAddItem}/>
+              <Picker 
+                selectedValue={this.state.inputDosageNumber}
+                onValueChange={(itemValue, itemIndex) => this.setState({inputDosageNumber: itemValue})}>     
+    
+                <Picker.Item label="1" value ='1' />
+                <Picker.Item label="2" value ='2' />
+                <Picker.Item label="3" value ='3' />
+                <Picker.Item label="4" value ='4' />
+                <Picker.Item label="5" value ='5' />
+                <Picker.Item label="6" value ='6' />
+                <Picker.Item label="7" value ='7' />
+                <Picker.Item label="8" value ='8' />
+                <Picker.Item label="9" value ='9' />
+                <Picker.Item label="10" value ='10' />
+                <Picker.Item label="11" value ='11' />
+                <Picker.Item label="12" value ='12' />
+                <Picker.Item label="13" value ='13' />
 
+              </Picker>
+              <Text> times per week</Text>
+              <Picker
+                label = 'days per week'
+                selectedValue={this.state.inputDosageType}
+                onValueChange={(itemValue, itemIndex) => this.setState({inputDosage: itemValue})}>     
+    
+                <Picker.Item label="per week" value ='week' />
+                <Picker.Item label="per day" value ='day' />
+
+              </Picker>
+              <Text> date the medication will finish</Text>
               <DatePickerIOS
+                style={styles.dateStyle}
                 date={this.state.chosenDate}
                 onDateChange={this.setDate}
                 />
-            </View>
-    
 
-        <View style={styles.list}>
-          <View style={styles.column}>
-            <View style={styles.deleteAllButton}>
-              <Button deleteAllItems={this.deleteAllItems} />
+                <TouchableOpacity style={styles.btnSubmit}>
+                <Button 
+                  title="Submit" 
+                  color="white" 
+                  onPress={this.onDoneAddItem}>
+                </Button>
+                </TouchableOpacity>
             </View>
-          </View>
-          {loadingItems ? (
-            <ScrollView contentContainerStyle={styles.scrollableList}>
-              {Object.values(allItems)
-                .reverse()
-                .map(item => (
-                  <List
-                    key={item.id}
-                    {...item}
-                    deleteItem={this.deleteItem}
-                    completeItem={this.completeItem}
-                    incompleteItem={this.incompleteItem}
-                  />
-                ))}
-            </ScrollView>
-          ) : (
-            <ActivityIndicator size="large" color="white" />
-          )}
-        </View>
+
             </ImageBackground>
   
         );
@@ -275,6 +295,25 @@ const styles = StyleSheet.create ({
             marginTop: 70,
             paddingLeft: 15,
             justifyContent: 'space-between',
-          }
+          },
+          dateStyle: {
+            width: WIDTH -55,
+            height: 100,
+            borderRadius: 45,
+            fontSize: 30,
+            backgroundColor: 'rgba(255,255,255,0.7)',
+            justifyContent: 'center',
+            marginTop: 30,
+            opacity: 1
+          },
+          btnSubmit: {
+            width: WIDTH -55,
+            height: 45,
+            borderRadius: 45,
+            backgroundColor: '#4EEEFF',
+            justifyContent: 'center',
+            marginTop: 30,
+            opacity: 0.75
+          },
 });
 export default Medication

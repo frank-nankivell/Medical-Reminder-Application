@@ -92,6 +92,7 @@ export default class Login extends React.Component {
                 />
               </TouchableOpacity>
              </View>
+             
              <TouchableOpacity style={styles.btnLogin}>
                 <Button title="Login" color="white" onPress={this._signInAsync.bind(this)}>
                 </Button>
