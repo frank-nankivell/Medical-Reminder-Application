@@ -22,8 +22,8 @@ class Home extends Component {
 
           loggedin: true,
           press: false,
-          allItems: {}
-    
+          allItems: {},
+          isCompleted: false
         }
       }
     render() {
@@ -38,7 +38,7 @@ class Home extends Component {
             console.log(error.message);
           }
         }
-
+// create section list for accessing 
     return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <View style={styles.centered}>
@@ -51,6 +51,7 @@ class Home extends Component {
             <Button title="sign me out" onPress={() => this.props.navigation.navigate('Auth')}/>
         </View>
         </ScrollView>
+
 
         <View style={styles.list}>
             <ScrollView contentContainerStyle={styles.scrollableList}>

@@ -52,7 +52,7 @@ export default class Login extends React.Component {
     this.props.navigation.navigate('Auth');
   }
 };
-
+//
   
   render() {
     return (

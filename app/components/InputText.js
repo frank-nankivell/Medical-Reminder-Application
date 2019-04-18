@@ -1,12 +1,14 @@
 import React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput, Dimensions } from 'react-native';
+const  { width: WIDTH} = Dimensions.get('window');
+
 import { inputPlaceholder, tintColor, lightWhite} from '../constants/colors';
 const InputText = ({ inputValue, onChangeText, onDoneAddItem}) => (
   <TextInput
     style={styles.input}
     inputValue={inputValue}
     onChangeText={onChangeText}
-    placeholder='enter medication'
+    placeholder='Enter Medication'
     placeholderTextColor={inputPlaceholder}
     multiline={true}
     autoCapitalize="sentences"
@@ -21,11 +23,14 @@ const InputText = ({ inputValue, onChangeText, onDoneAddItem}) => (
 );
 const styles = StyleSheet.create({
   input: {
-    paddingTop: 10,
-    paddingRight: 15,
-    fontSize: 34,
-    color: tintColor,
-    fontWeight: '500'
-  }
+    width: WIDTH -55,
+    height: 45,
+    borderRadius: 45,
+    fontSize: 30,
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    justifyContent: 'center',
+    marginTop: 30,
+    opacity: 0.75
+}
 });
 export default InputText;

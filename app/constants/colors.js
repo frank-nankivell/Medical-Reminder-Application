@@ -3,7 +3,7 @@
 
 const primaryStart = '#f18a69';
 const primaryEnd = '#d13e60';
-export const lightWhite = '#fcefe9';
+export const lightWhite = '#FCEFE9';
 export const lightblue = '#5E99C9';
 export const green1 = '#2E818A';
 export const green2 = '#328895';
