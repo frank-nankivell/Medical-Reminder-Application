@@ -51,6 +51,7 @@ class Medication extends Component {
             inputNotes: '',
             inputEndDate: '',
             Created: new Date(),
+            validate: false,
             loadingItems: false,
             isCompleted: false
 
@@ -110,9 +111,20 @@ class Medication extends Component {
           console.log(err);
         }
       };
+
+      _onValidate = () => {
+        this.setState({
+          validate: true,
+
+        })
+      };
+
+      _onCancel = () => {
+        this.state.validate == false
+      };
     
 
-      onDoneAddItem = () => {
+      _onDoneAddItem = () => {
 
         const { inputValue, inputDosage, inputPerDay, inputInterval, inputNotes, inputEndDate} = this.state;
 
@@ -125,6 +137,7 @@ class Medication extends Component {
                   const newItemObject = {
                     [id]: {
                       id,
+                      submit: false,
                       isCompleted: false,
                       value: inputValue,
                       dosage: inputDosage,
@@ -218,6 +231,7 @@ class Medication extends Component {
       };
 
     render() {
+      if (this.state.validate == false) {
         return (
             <ImageBackground source={bgImage} style={styles.backgroundContainer}>
             
@@ -305,7 +319,7 @@ class Medication extends Component {
                 <Button 
                   title="Submit" 
                   color="white" 
-                  onPress={this.onDoneAddItem}>
+                  onPress={this._onValidate}>
                 </Button>
                 </TouchableOpacity>
   
@@ -313,8 +327,34 @@ class Medication extends Component {
             </ImageBackground>
   
         );
-    }
+    } else {
+      return (
+        <ScrollView>
+        <View>
+        <TouchableOpacity style={styles.btnSubmit}>
+          <Button 
+              title="Confirm Medication Reminder" 
+              color="black" 
+              onPress={this._onDoneAddItem}>
+            </Button>
+            </TouchableOpacity>
+        </View>
+        <View>
+        <TouchableOpacity style={styles.btnCancel}>
+          <Button 
+              title="Cancel" 
+              color="black" 
+              onPress={this._onCancel}>
+            </Button>
+            </TouchableOpacity>
+        </View>
+        </ScrollView>
+
+
+      )
+  }
 }
+};
 
 
 const styles = StyleSheet.create ({
@@ -391,5 +431,17 @@ const styles = StyleSheet.create ({
             marginBottom: 15,
             opacity: 0.75
           },
+          btnCancel: {
+            marginHorizontal: 25,
+            width: WIDTH -55,
+            height:40,
+            borderRadius: 45,
+            backgroundColor: 'blue',
+            justifyContent: 'center',
+            marginTop: 15,
+            marginBottom: 15,
+            opacity: 0.75
+
+          }
 });
 export default Medication
