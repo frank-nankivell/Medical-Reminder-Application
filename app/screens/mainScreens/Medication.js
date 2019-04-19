@@ -8,7 +8,7 @@ import ButtonNew from '../../components/Button';
 import InputMedication from '../../components/InputMedication';
 import DatePicker from 'react-native-datepicker'
 import uuid from 'uuid/v1';
-import green1 from '../../constants/colors';
+import colors from '../../constants/colors';
 import InputDate from '../../components/InputDate'
 import { Calendar, 
         CalendarList, 
@@ -51,7 +51,8 @@ class Medication extends Component {
             inputNotes: '',
             inputEndDate: '',
             Created: new Date(),
-            validate: false,
+            validateScreen: false,
+            thanks: false,
             loadingItems: false,
             isCompleted: false
 
@@ -112,25 +113,30 @@ class Medication extends Component {
         }
       };
 
-      _onValidate = () => {
+      _onValidateScreen = () => {
+        const { inputValue, inputDosage, inputPerDay, inputInterval, inputNotes, inputEndDate} = this.state;
+        if (inputValue == '' || inputDosage == '' || inputPerDay == '' ||inputInterval=='' || inputNotes==''|| inputEndDate == '') {
+          Alert.alert('Please complete all the values for the reminder')
+      } else {
         this.setState({
-          validate: true,
+          validateScreen: true,
 
         })
-      };
+      }
+    };
 
       _onCancel = () => {
-        this.state.validate == false
+        this.setState({
+          validateScreen: false,
+        })
       };
     
 
       _onDoneAddItem = () => {
 
         const { inputValue, inputDosage, inputPerDay, inputInterval, inputNotes, inputEndDate} = this.state;
-
         if (inputValue == '' || inputDosage == '' || inputPerDay == '' ||inputInterval=='' || inputNotes==''|| inputEndDate == '') {
-
-            Alert.alert('Please complete all the values - ya numpty!')
+            Alert.alert('Error values not complete')
         } else {
                 this.setState(prevState => {
                   const id = uuid();
@@ -158,7 +164,7 @@ class Medication extends Component {
                     inputInterval: '',
                     inputNotes: '',
                     inputEndDate: '',
-
+                    validateScreen: false, 
                     allItems: {
                       ...prevState.allItems,
                       ...newItemObject
@@ -171,67 +177,14 @@ class Medication extends Component {
               }
             };
 
-      deleteItem = id => {
-        this.setState(prevState => {
-          const allItems = prevState.allItems;
-          delete allItems[id];
-          const newState = {
-            ...prevState,
-            ...allItems
-          };
-          this.saveItems(newState.allItems);
-          return { ...newState };
-        });
-      };
 
-      completeItem = id => {
-        this.setState(prevState => {
-          const newState = {
-            ...prevState,
-            allItems: {
-              ...prevState.allItems,
-              [id]: {
-                ...prevState.allItems[id],
-                isCompleted: true
-              }
-            }
-          };
-          this.saveItems(newState.allItems);
-          return { ...newState };
-        });
-      };
-      incompleteItem = id => {
-        this.setState(prevState => {
-          const newState = {
-            ...prevState,
-            allItems: {
-              ...prevState.allItems,
-              [id]: {
-                ...prevState.allItems[id],
-                isCompleted: false
-              }
-            }
-          };
-          this.saveItems(newState.allItems);
-          return { ...newState };
-        });
-      };
-
-      deleteAllItems = async () => {
-        try {
-          await AsyncStorage.removeItem('Medication');
-          this.setState({ allItems: {} });
-        } catch (err) {
-          console.log(err);
-        }
-      };
 
       saveItems = newItem => {
         const saveItem = AsyncStorage.setItem('MedicationReminder', JSON.stringify(newItem));
       };
 
     render() {
-      if (this.state.validate == false) {
+      if (this.state.validateScreen == false) {
         return (
             <ImageBackground source={bgImage} style={styles.backgroundContainer}>
             
@@ -257,7 +210,7 @@ class Medication extends Component {
                     placeholder='Pills per dose'
                     keyboardType='numeric'
                     onChangeText={(value) => this.setState({inputDosage: value})}
-                    value={this.state.input}
+                    value={this.state.inputDosage}
                     maxLength={10}  //setting limit of input
                   />
 
@@ -311,7 +264,7 @@ class Medication extends Component {
                     placeholder='Enter Notes'
                     onChangeText={(value) => this.setState({inputNotes: value})}
                     value={this.state.inputNotes}
-                    maxLength={10}  //setting limit of input
+                    maxLength={50}  //setting limit of input
                   />
                   </View>
                 <TouchableOpacity style={styles.btnSubmit}>
@@ -319,7 +272,7 @@ class Medication extends Component {
                 <Button 
                   title="Submit" 
                   color="white" 
-                  onPress={this._onValidate}>
+                  onPress={this._onValidateScreen}>
                 </Button>
                 </TouchableOpacity>
   
@@ -330,7 +283,7 @@ class Medication extends Component {
     } else {
       return (
         <ScrollView>
-        <View>
+        <View style={styles.validateScreen} >
         <TouchableOpacity style={styles.btnSubmit}>
           <Button 
               title="Confirm Medication Reminder" 
@@ -436,12 +389,17 @@ const styles = StyleSheet.create ({
             width: WIDTH -55,
             height:40,
             borderRadius: 45,
-            backgroundColor: 'blue',
+            backgroundColor: colors.green1,
             justifyContent: 'center',
             marginTop: 15,
             marginBottom: 15,
             opacity: 0.75
-
-          }
+          },
+            validateScreen: {
+              marginTop: 250,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }
 });
 export default Medication

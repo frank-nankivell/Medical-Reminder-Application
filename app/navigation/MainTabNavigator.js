@@ -26,9 +26,9 @@ const HomeStack = createStackNavigator({
   });
   
   MedicationStack.navigationOptions = {
-    tabBarLabel: 'Medication Reminder',
+    tabBarLabel: 'Add reminder',
     tabBarIcon: ({ tintColor }) => (
-      <Icon name="md-reorder" size={35}/>
+      <Icon name="ios-add-circle" size={50}/>
     )
   };
 
@@ -38,9 +38,9 @@ const HomeStack = createStackNavigator({
   });
   
   LocationStack.navigationOptions = {
-    tabBarLabel: 'Emergency location finder',
+    tabBarLabel: 'Pharmacy finder',
     tabBarIcon: ({ tintColor }) => (
-      <Icon2 name="dna" size={35}/>
+      <Icon2 name="medical-bag" size={35}/>
     )
   };
 
