@@ -23,6 +23,7 @@ import {
     Text,
     View,
     TextInput,
+    Alert,
     Picker,
     TouchableOpacity,
     ActivityIndicator,
@@ -33,7 +34,7 @@ import { FlatList } from 'react-native-gesture-handler';
 
 
 
-const headerTitle = 'Medication Reminder';
+const headerTitle = 'New Medication Reminder';
 const currentDate = new Date().getDate();
 const  { width: WIDTH} = Dimensions.get('window');
 
@@ -41,20 +42,25 @@ const  { width: WIDTH} = Dimensions.get('window');
 class Medication extends Component {
     constructor() {
         super()
+        this.state = {
+            allItems: {},
+            inputValue: '',
+            inputDosage: '',
+            inputPerDay: '',
+            inputInterval:'',
+            inputNotes: '',
+            inputEndDate: '',
+            Created: new Date(),
+            loadingItems: false,
+            isCompleted: false
 
-    this.state = {
-        inputValue: '',
-        inputDosage: '',
-        inputPerDay: '',
-        inputInterval:'',
-        inputNotes: '',
-        inputEndDate: '',
-        Created: new Date(),
-        loadingItems: false,
-        isCompleted: false
-
-    };
+        };
 };
+      onChanged (text) {
+      this.setState({
+          mobile: text.replace(/[^0-9]/g, ''),
+      });
+    }
   
     // Method for updating Value
     newInputValue = value => {
@@ -107,33 +113,51 @@ class Medication extends Component {
     
 
       onDoneAddItem = () => {
-        const { inputValue } = this.state;
-        if (inputValue !== '' || inputDosage !== '') {
-          this.setState(prevState => {
-            const id = uuid();
-            const newItemObject = {
-              [id]: {
-                id,
-                isCompleted: false,
-                type: inputValue,
-                dosage: inputDosage,
-              //  endDate: date,
-                createdAt: Date.now()
+
+        const { inputValue, inputDosage, inputPerDay, inputInterval, inputNotes, inputEndDate} = this.state;
+
+        if (inputValue == '' || inputDosage == '' || inputPerDay == '' ||inputInterval=='' || inputNotes==''|| inputEndDate == '') {
+
+            Alert.alert('Please complete all the values - ya numpty!')
+        } else {
+                this.setState(prevState => {
+                  const id = uuid();
+                  const newItemObject = {
+                    [id]: {
+                      id,
+                      isCompleted: false,
+                      value: inputValue,
+                      dosage: inputDosage,
+                      perDay: inputPerDay,
+                      interval: inputInterval,
+                      notes: inputNotes,
+                      endDate: inputEndDate,
+                      createdAt: Date.now()
+                    }
+                  };
+                  console.log(newItemObject);
+
+                  const newState = {
+                    ...prevState,
+                    inputValue: '',
+                    inputDosage: '',
+                    inputPerDay: '',
+                    inputInterval: '',
+                    inputNotes: '',
+                    inputEndDate: '',
+
+                    allItems: {
+                      ...prevState.allItems,
+                      ...newItemObject
+                    }
+                  };
+                  this.saveItems(newState.allItems);
+                  return { ...newState };
+                  
+                });
               }
             };
-            const newState = {
-              ...prevState,
-              inputValue: '',
-              allItems: {
-                ...prevState.allItems,
-                ...newItemObject
-              }
-            };
-            this.saveItems(newState.allItems);
-            return { ...newState };
-          });
-        }
-      };
+
       deleteItem = id => {
         this.setState(prevState => {
           const allItems = prevState.allItems;
@@ -190,11 +214,10 @@ class Medication extends Component {
       };
 
       saveItems = newItem => {
-        const saveItem = AsyncStorage.setItem('Medication new', JSON.stringify(newItem));
+        const saveItem = AsyncStorage.setItem('MedicationReminder', JSON.stringify(newItem));
       };
 
     render() {
-        const { inputValue, inputDosage, inputPerDay, inputInterval, inputNotes, inputEndDate  } = this.state; 
         return (
             <ImageBackground source={bgImage} style={styles.backgroundContainer}>
             
@@ -207,56 +230,37 @@ class Medication extends Component {
             </View>
 
             <View style={styles.inputContainer}>
-                <InputText // input Value
+                  <TextInput // input Name 
                     style={styles.input}
-                    inputValue={inputValue} 
-                    onChangeText={this.newInputValue} />
+                    placeholder='Enter name of pill'
+                    onChangeText={(value) => this.setState({inputValue: value})}
+                    value={this.state.inputValue}
+                    maxLength={30}  //setting limit of input
+                  />
 
                   <TextInput // input dosage 
                     style={styles.input}
-                    placeholder='Enter Dosage'
+                    placeholder='Pills per dose'
                     keyboardType='numeric'
-                    onChangeText={(text)=> this.onChanged(text)}
-                    value={this.state.inputDosage}
+                    onChangeText={(value) => this.setState({inputDosage: value})}
+                    value={this.state.input}
                     maxLength={10}  //setting limit of input
                   />
 
                   <TextInput // input Per day 
                     style={styles.input}
                     keyboardType='numeric'
-                    placeholder='Enter Amount per day'
-                    onChangeText={(text)=> this.onChanged(text)}
+                    placeholder='Doses per day'
+                    onChangeText={(value) => this.setState({inputPerDay: value})}
                     value={this.state.inputPerDay}
                     maxLength={10}  //setting limit of input
                   />
-                  <DatePicker // input interval
-                    style={styles.inputDate}
-                    date={this.state.inputInterval}
-                    mode="time"
-                    placeholder="Select Interval Time"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                      dateInput: {
-                        marginHorizontal: 25,
-                        width: WIDTH -55,
-                        height:40,
-                        borderRadius: 45,
-                        backgroundColor: '#6EC3CF',
-                        justifyContent: 'center',
-                        marginTop: 10,
-                        marginBottom: 25,
-                        opacity: 0.75
-                      }
-                      // ... You can check the source to find the other keys.
-                    }}
-                    onDateChange={(time) => {this.setState({inputInterval: time})}}
-                    />
+              
                   <TextInput // input times per day  
                     style={styles.input}
-                    placeholder='Enter Times per Day'
+                    placeholder='Enter Interval between doses'
                     keyboardType='numeric'
-                    onChangeText={(text)=> this.onChanged(text)}
+                    onChangeText={(value) => this.setState({inputInterval: value})}
                     value={this.state.inputInterval}
                     maxLength={10}  //setting limit of input
                   />
@@ -271,14 +275,17 @@ class Medication extends Component {
                     cancelBtnText="Cancel"
                     customStyles={{
                       dateInput: {
+                        color: 'black',
+                        fontSize: 25,
                         marginHorizontal: 25,
                         width: WIDTH -55,
                         height:40,
                         borderRadius: 45,
+                      
                         backgroundColor: '#6EC3CF',
                         justifyContent: 'center',
                         marginTop: 10,
-                        marginBottom: 25,
+                        marginBottom: 10,
                         opacity: 0.75
                       }
                       // ... You can check the source to find the other keys.
@@ -288,7 +295,7 @@ class Medication extends Component {
                   <TextInput // input Notes
                     style={styles.input}
                     placeholder='Enter Notes'
-                    onChangeText={(text)=> this.onChanged(text)}
+                    onChangeText={(value) => this.setState({inputNotes: value})}
                     value={this.state.inputNotes}
                     maxLength={10}  //setting limit of input
                   />
@@ -349,24 +356,26 @@ const styles = StyleSheet.create ({
           },
           inputContainer: {
             flex: 1, 
-            width: WIDTH -55,
+            width: WIDTH -35,
             borderRadius: 55,
             alignItems: 'center',
             backgroundColor:'white',
           },
           input: {
-            paddingLeft: 45,
+            borderBottomColor: 'rgba(0,0,0,0.5)',
+            paddingLeft:10,
             flex: 0.3,
             fontSize: 25,
             width: WIDTH -55,
             borderRadius: 55,
             alignItems: 'center',
             borderColor: 'rgba(0,0,0,0.5)',
-            backgroundColor:  'white',
-            color: 'white'
+            backgroundColor: 'white',
+            borderBottomWidth: 1,
+            color: 'rgba(0,0,0,0.5)',
           },
           inputDate: {
-            flex: 0.3,
+            flex: 0.15,
             width: WIDTH -55,
             borderRadius: 55,
           },
@@ -378,8 +387,8 @@ const styles = StyleSheet.create ({
             borderRadius: 45,
             backgroundColor: 'rgba(0,0,0,0.5)',
             justifyContent: 'center',
-            marginTop: 10,
-            marginBottom: 25,
+            marginTop: 15,
+            marginBottom: 15,
             opacity: 0.75
           },
 });
