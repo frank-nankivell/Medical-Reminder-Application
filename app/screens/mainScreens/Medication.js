@@ -35,7 +35,7 @@ import { FlatList } from 'react-native-gesture-handler';
 
 
 const headerTitle = 'New Medication Reminder';
-const currentDate = new Date().getDate();
+
 const  { width: WIDTH} = Dimensions.get('window');
 
 
@@ -50,57 +50,36 @@ class Medication extends Component {
             inputInterval:'',
             inputNotes: '',
             inputEndDate: '',
-            Created: new Date(),
+            currentDate: this.getCurrentDate(),
+            created: '',
             validateScreen: false,
+            reminderScreen: false,
             thanks: false,
             loadingItems: false,
             isCompleted: false
 
         };
-};
-      onChanged (text) {
+    };
+      _onChangedDosage(value) {
       this.setState({
-          mobile: text.replace(/[^0-9]/g, ''),
+        inputDosage: value.replace(/[^0-9]/g, ''),
       });
     }
-  
-    // Method for updating Value
-    newInputValue = value => {
-        this.setState({
-          inputValue: value,
-        });
-      };
-      // Method for updating Dosage
-      newInputDosage = value => {
-        this.setState({
-          inputDosage: value
-        });
-      };
-      // Method for updating per day 
-      newInputPerDay  =  value => {
-        this.setState({
-          inputPerDay: value
-        });
-      };
-      // Method for updating Interval 
-      newInputInterval  =  value => {
-        this.setState({
-          inputInterval: value
-        });
-      };
-    // Method for updating Notes
-      newInputNotes  =  value => {
-        this.setState({
-          inputNotes: value
-        });
-      };
-      // Method for updating End Date
-      newInputEndDate  =  value => {
-        this.setState({
-          inputEndDate: value
-        });
-      };
 
+    _onChangedPerDay(value) {
+      this.setState({
+        inputPerDay: value.replace(/[^0-9]/g, ''),
+      });
+    }
+    getCurrentDate = () => {
+      var dateObj = new Date();
+      var month = dateObj.getUTCMonth() + 1;
+      var day = dateObj.getUTCDate();
+      var year = dateObj.getUTCFullYear();
+      newdate = year + "-" + month + "-" + day;
+        return newdate;
+    };
+  
       loadingItems = async () => {
         try {
           const allItems = await AsyncStorage.getItem('Medication');
@@ -124,6 +103,13 @@ class Medication extends Component {
         })
       }
     };
+
+    _createReminder = () => {
+      this.setState({
+        reminderScreen: true
+      });
+    }
+
 
       _onCancel = () => {
         this.setState({
@@ -151,7 +137,7 @@ class Medication extends Component {
                       interval: inputInterval,
                       notes: inputNotes,
                       endDate: inputEndDate,
-                      createdAt: Date.now()
+                      createdAt: this.state.currentDate,
                     }
                   };
                   console.log(newItemObject);
@@ -165,6 +151,7 @@ class Medication extends Component {
                     inputNotes: '',
                     inputEndDate: '',
                     validateScreen: false, 
+                    reminderScreen: false,
                     allItems: {
                       ...prevState.allItems,
                       ...newItemObject
@@ -199,7 +186,7 @@ class Medication extends Component {
             <View style={styles.inputContainer}>
                   <TextInput // input Name 
                     style={styles.input}
-                    placeholder='Enter name of pill'
+                    placeholder='Name of pill'
                     onChangeText={(value) => this.setState({inputValue: value})}
                     value={this.state.inputValue}
                     maxLength={30}  //setting limit of input
@@ -207,9 +194,9 @@ class Medication extends Component {
 
                   <TextInput // input dosage 
                     style={styles.input}
-                    placeholder='Pills per dose'
+                    placeholder='Pills per time'
                     keyboardType='numeric'
-                    onChangeText={(value) => this.setState({inputDosage: value})}
+                    onChangeText={(value) => this._onChangedDosage(value)}
                     value={this.state.inputDosage}
                     maxLength={10}  //setting limit of input
                   />
@@ -217,8 +204,8 @@ class Medication extends Component {
                   <TextInput // input Per day 
                     style={styles.input}
                     keyboardType='numeric'
-                    placeholder='Doses per day'
-                    onChangeText={(value) => this.setState({inputPerDay: value})}
+                    placeholder='Pills per day'
+                    onChangeText={(value) => this._onChangedPerDay(value)}
                     value={this.state.inputPerDay}
                     maxLength={10}  //setting limit of input
                   />
@@ -238,6 +225,7 @@ class Medication extends Component {
                     mode="date"
                     placeholder="select end date"
                     format="YYYY-MM-DD"
+                    minDate={this.state.currentDate}
                     confirmBtnText="Confirm"
                     cancelBtnText="Cancel"
                     customStyles={{

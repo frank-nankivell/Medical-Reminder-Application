@@ -49,7 +49,7 @@ export default class Splash extends Component {
                     <Button
                     raised
                     style ={styles.buttonStyler}
-                    title = "Login to see access your dosage"
+                    title = "Login to see your reminders"
                     color="rgba(0,0,0,0.5)"
                     onPress={this._navSignIn.bind(this)}
                     />

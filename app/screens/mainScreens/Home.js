@@ -3,6 +3,7 @@ import {
     ScrollView,
     Text,
     View,
+    TouchableOpacity,
     Image,
     StatusBar,
     Button,
@@ -11,51 +12,89 @@ import {
     ImageBackground,
     StyleSheet } from 'react-native';
 
+import colors from '../../constants/colors';
 
 import List from '../../components/List';
 import bgImage from '../../images/background1.jpg';
 import Header from '../../components/Header';
+import { FlatList } from 'react-native-gesture-handler';
 const headerTitle = 'Your Medication Reminders';
 
 class Home extends Component {
     constructor() {
         super()
-        this.state = {
 
+        state = {
           loggedin: true,
           press: false,
           loadingItems: false,
           allItems: {},
-        }
-      }
-      componentDidMount = () => {
-		this.loadingItems();
-	};
+          weekItems: {},
+          todayItems: {},
+          day: true,
+          currentDate: this.getCurrentDate(),
+        };
 
-      loadingItems = async () => {
+          componentDidMount = () => {
+            this.loadingItems();
+        }
+      };
+
+
+  getCurrentDate = () => {
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1;
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+      newdate = year + "-" + month + "-" + day;
+      return newdate;
+  }
+
+    loadingItems = async () => {
 		try {
-			const allItems = await AsyncStorage.getItem('MedicationReminder');
+      const CurrentDate = this.state.currrentDate;
+      const allItems = await AsyncStorage.getItem('MedicationReminder');
 			this.setState({
 				loadingItems: true,
 				allItems: JSON.parse(allItems) || {}
-			});
+      });
+      console.log()
 		} catch (err) {
 			console.log(err);
 		}
-	};
+  };
+
+  _signOutAsync = async () => {
+    try {
+        await AsyncStorage.removeItem('userToken');
+        this.props.navigation.navigate('Auth');
+      } catch (error) {
+        // Error retrieving data
+        console.log(error.message);
+      }
+    }
 
 
-    _signOutAsync = async () => {
-        try {
-            await AsyncStorage.removeItem('userToken');
-            this.props.navigation.navigate('Auth');
-          } catch (error) {
-            // Error retrieving data
-            console.log(error.message);
-          }
-        }
 
-        deleteItem = id => {
+    _getDayReminders = () => {
+      const CurrentDate = this.state.currrentDate;
+      var todayItems;
+      this.setState({
+        day: true,
+        todayItems: JSON.parse(todayItems) || {}
+      })
+    };
+
+    _getWeekReminders = () => {
+      this.setState({
+        day: false
+      })
+    };
+
+
+
+
+    deleteItem = id => {
             this.setState(prevState => {
               const allItems = prevState.allItems;
               delete allItems[id];
@@ -68,7 +107,7 @@ class Home extends Component {
             });
           };
     
-          completeItem = id => {
+      completeItem = id => {
             this.setState(prevState => {
               const newState = {
                 ...prevState,
@@ -119,8 +158,34 @@ render() {
         <View style={styles.centered}>
               <Header title={headerTitle} />
         </View>
-
-        <Text style={styles.text}>Check your Medical Reminders</Text>
+       
+        <View style={styles.toggleButtons} >
+        <TouchableOpacity style={styles.toggleButtons}>
+          <Button 
+              style={styles.buttonDay}
+              title="Reminders for today" 
+              color="white" 
+              onPress={this._getDayReminders}>
+            </Button>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.toggleButtons}>
+          <Button 
+            style={styles.buttonWeek}
+              title="Reminders for this week" 
+              color="white" 
+              onPress={this._getWeekReminders}>
+            </Button>
+            </TouchableOpacity>
+        </View>
+        <View>
+        <FlatList
+            data={allItems}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+            <Text>{item.id.inputValue}</Text>
+            )}
+        />
+    </View>
         <View style ={styles.buttonStyler}>
             <Button color='rgba(0,0,0,0.5)'
                     style={styles.standardText} 
@@ -128,25 +193,8 @@ render() {
                     size={30}
                     onPress={() => this.props.navigation.navigate('Auth')}/>
         </View>
-
-        <View style={styles.list}>
-        <ScrollView contentContainerStyle={styles.scrollableList}>
-            {Object.values(allItems)
-            .reverse()
-            .map(item => (
-                <List
-                key={item.id}
-                {...item}
-                deleteItem={this.deleteItem}
-                completeItem={this.completeItem}
-                incompleteItem={this.incompleteItem}
-                />
-            ))}
-            </ScrollView>
-            </View>
-            </ImageBackground>
-
-            ) } else 
+      </ImageBackground>
+            )} else 
             return (
                 <ImageBackground source={bgImage} style={styles.backgroundContainer}>
                 <ActivityIndicator size='large' color="white" />
@@ -193,6 +241,24 @@ const styles = StyleSheet.create ({
         justifyContent: 'center',
         alignItems: 'center'
       },
+      toggleButtons: {
+          flex: 1,
+          marginTop: 10,
+          flexDirection: 'row',
+          alignItems: 'stretch',
+          justifyContent: 'center',
+        },
+        buttonDay: {
+          flex: 1,
+          height: 45,
+          borderRadius: 45,
+          backgroundColor: colors.lightblue,
+          opacity: 1,
+        },
+        buttonWeek: {
+          flex: 1, 
+          backgroundColor: colors.green1,
+        }
 
 });
 export default Home;
