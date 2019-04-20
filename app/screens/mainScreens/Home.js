@@ -5,8 +5,11 @@ import {
     View,
     TouchableOpacity,
     Image,
+    FlatList,
     StatusBar,
     Button,
+    Card,
+    Alert,
     ActivityIndicator,
     AsyncStorage,
     ImageBackground,
@@ -16,38 +19,17 @@ import colors from '../../constants/colors';
 
 import List from '../../components/List';
 import bgImage from '../../images/background1.jpg';
+import logo from '../../images/logo.png'
 import Header from '../../components/Header';
-import { FlatList } from 'react-native-gesture-handler';
+//import { FlatList } from 'react-native-gesture-handler';
 const headerTitle = 'Your Medication Reminders';
 
 class Home extends Component {
-    constructor() {
-        super()
-
-        state = {
-          loggedin: true,
-          press: false,
-          loadingItems: false,
-          allItems: {},
-          weekItems: {},
-          todayItems: {},
-          day: true,
-          currentDate: this.getCurrentDate(),
-        };
-
-          componentDidMount = () => {
-            this.loadingItems();
-        }
+    state = {
+      loadingItems: false,
       };
-
-
-  getCurrentDate = () => {
-    var dateObj = new Date();
-    var month = dateObj.getUTCMonth() + 1;
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();
-      newdate = year + "-" + month + "-" + day;
-      return newdate;
+        componentDidMount = () => {
+          this.loadingItems();
   }
 
     loadingItems = async () => {
@@ -55,35 +37,52 @@ class Home extends Component {
       const CurrentDate = this.state.currrentDate;
       const allItems = await AsyncStorage.getItem('MedicationReminder');
 			this.setState({
-				loadingItems: true,
+        loadingItems: true,
+        currentDate: this.getCurrentDate(),
+        weekItems: {},
+        todayItems: {},
 				allItems: JSON.parse(allItems) || {}
       });
       console.log()
+      console.log(JSON.parse(allItems)) // check that items have loaded on start
 		} catch (err) {
 			console.log(err);
 		}
   };
 
+    getCurrentDate = () => {
+      var dateObj = new Date();
+      var month = dateObj.getUTCMonth() + 1;
+      var day = dateObj.getUTCDate();
+      var year = dateObj.getUTCFullYear();
+        newdate = year + "-" + month + "-" + day;
+        return newdate;
+  };
+
+
   _signOutAsync = async () => {
     try {
         await AsyncStorage.removeItem('userToken');
         this.props.navigation.navigate('Auth');
+        this.setState({
+          loggedin: false,
+        })
       } catch (error) {
         // Error retrieving data
         console.log(error.message);
       }
-    }
-
+    };
 
 
     _getDayReminders = () => {
-      const CurrentDate = this.state.currrentDate;
+    };
+      /*const CurrentDate = this.state.currrentDate;
       var todayItems;
       this.setState({
         day: true,
         todayItems: JSON.parse(todayItems) || {}
       })
-    };
+    }; */
 
     _getWeekReminders = () => {
       this.setState({
@@ -150,6 +149,32 @@ class Home extends Component {
             }
         };
 
+        keyExtractor = (item) => item.id;
+  
+        renderItem = ({ item }) => (
+          <Card
+            image={logo}
+            imageStyle={{ height: 50 }}
+            containerStyle={[styles.card, { height: item.height }]}
+          >
+            <Text style={{margin: 10}}>
+              {item.value}
+            </Text>
+            <Text style={{margin: 10}}>
+              {item.notes}
+            </Text>
+            <Text style={{margin: 10}}>
+              {item.dosage}
+            </Text>
+          </Card>
+        );
+
+
+        _helpButton = () => {
+          Alert.alert('help')
+        }
+
+
 render() {
     const { loadingItems, allItems } = this.state;
     if(loadingItems==true) {
@@ -158,9 +183,15 @@ render() {
         <View style={styles.centered}>
               <Header title={headerTitle} />
         </View>
+
+        <View style={styles.logoContainer}>
+        <Image source={logo}
+        style={styles.logo}
+        />
+        </View>
        
         <View style={styles.toggleButtons} >
-        <TouchableOpacity style={styles.toggleButtons}>
+        <TouchableOpacity style={styles.buttonDay}>
           <Button 
               style={styles.buttonDay}
               title="Reminders for today" 
@@ -168,7 +199,7 @@ render() {
               onPress={this._getDayReminders}>
             </Button>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.toggleButtons}>
+            <TouchableOpacity style={styles.buttonWeek}>
           <Button 
             style={styles.buttonWeek}
               title="Reminders for this week" 
@@ -177,15 +208,8 @@ render() {
             </Button>
             </TouchableOpacity>
         </View>
-        <View>
-        <FlatList
-            data={allItems}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-            <Text>{item.id.inputValue}</Text>
-            )}
-        />
-    </View>
+
+             
         <View style ={styles.buttonStyler}>
             <Button color='rgba(0,0,0,0.5)'
                     style={styles.standardText} 
@@ -193,7 +217,36 @@ render() {
                     size={30}
                     onPress={() => this.props.navigation.navigate('Auth')}/>
         </View>
-      </ImageBackground>
+        <View style ={styles.buttonHelp}>
+            <Button color='white'
+                    style={styles.standardText} 
+                    title="help?" 
+                    size={30}
+                    onPress={this._helpButton}/>
+
+        {allItems != '' ?
+      
+      <View style={styles.list}>
+      {Object.values(allItems)
+        .reverse()
+        .map(item => (
+      
+      <FlatList
+            data={item.id}
+            key={item.id}
+            style={styles.container}
+            columnWrapperStyle={styles.column}
+            numColumns={3}
+            renderItem={item.id}
+            />
+        ))}
+            
+    </View>
+      : 
+            <Text> No Reminders Set </Text>
+        }
+        </View>
+        </ImageBackground>
             )} else 
             return (
                 <ImageBackground source={bgImage} style={styles.backgroundContainer}>
@@ -220,19 +273,22 @@ const styles = StyleSheet.create ({
         marginTop: 15,
         opacity: 2
         },
-    buttonStyler:
-        {
-            marginTop: 50,
-            marginBottom: 10
+    buttonStyler:{
+          marginTop: 50,
+          marginBottom: 10
         },
-    logo:
-    {
-        marginTop: 10,
-        marginBottom: 10
-    },
+    buttonHelp: {
+          marginTop: 50,
+          marginBottom: 10,
+          paddingLeft: 250,
+  
+        },
+      logo:{
+          width: 60,
+          height: 60,
+        },
     logoContainer: {
-        alignItems: 'center',
-        marginBottom: 50
+        alignItems: 'stretch',
       },
       backgroundContainer: {
         flex: 1,
@@ -245,8 +301,6 @@ const styles = StyleSheet.create ({
           flex: 1,
           marginTop: 10,
           flexDirection: 'row',
-          alignItems: 'stretch',
-          justifyContent: 'center',
         },
         buttonDay: {
           flex: 1,
@@ -257,8 +311,32 @@ const styles = StyleSheet.create ({
         },
         buttonWeek: {
           flex: 1, 
+          height: 45,
+          borderRadius: 45,
           backgroundColor: colors.green1,
-        }
+        },
+        list: {
+          flex: 1,
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          backgroundColor: colors.green1,
+          color: 'black',
+        },
+        container: {
+          flex: 1,
+          paddingTop: 10,
+          flexDirection: 'column',
+        },
+        list: {
+          justifyContent: 'space-around',
+        },
+        column: {
+          flexShrink: 1,
+        },
+        card: {
+          width: 10,
+          margin: 10,
+        },
 
 });
 export default Home;
