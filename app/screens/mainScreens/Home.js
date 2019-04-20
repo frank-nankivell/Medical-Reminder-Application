@@ -5,23 +5,32 @@ import {
     View,
     TouchableOpacity,
     Image,
-    FlatList,
     StatusBar,
     Button,
-    Card,
-    Alert,
+    FlatList,
     ActivityIndicator,
     AsyncStorage,
     ImageBackground,
     StyleSheet } from 'react-native';
 
+import {
+  Container, 
+  Content, 
+  Icon, 
+  Left, 
+  Right,
+  List, 
+  ListItem  }
+  from 'native-base';
+
+
 import colors from '../../constants/colors';
 
-import List from '../../components/List';
+//import List from '../../components/List';
 import bgImage from '../../images/background1.jpg';
 import logo from '../../images/logo.png'
 import Header from '../../components/Header';
-//import { FlatList } from 'react-native-gesture-handler';
+import { Title } from 'native-base';
 const headerTitle = 'Your Medication Reminders';
 
 class Home extends Component {
@@ -72,10 +81,12 @@ class Home extends Component {
         console.log(error.message);
       }
     };
+    _keyExtractor = (item, index) => item.id;
 
 
     _getDayReminders = () => {
     };
+
       /*const CurrentDate = this.state.currrentDate;
       var todayItems;
       this.setState({
@@ -89,8 +100,6 @@ class Home extends Component {
         day: false
       })
     };
-
-
 
 
     deleteItem = id => {
@@ -148,31 +157,37 @@ class Home extends Component {
               console.log(err);
             }
         };
-
-        keyExtractor = (item) => item.id;
-  
-        renderItem = ({ item }) => (
-          <Card
-            image={logo}
-            imageStyle={{ height: 50 }}
-            containerStyle={[styles.card, { height: item.height }]}
-          >
-            <Text style={{margin: 10}}>
-              {item.value}
-            </Text>
-            <Text style={{margin: 10}}>
-              {item.notes}
-            </Text>
-            <Text style={{margin: 10}}>
-              {item.dosage}
-            </Text>
-          </Card>
-        );
-
-
         _helpButton = () => {
           Alert.alert('help')
         }
+        
+
+      Render_FlatList_Sticky_header = () => {
+      
+          var Sticky_header_View = (
+      
+          <View style={styles.header_style}>
+      
+            <Text style={{textAlign: 'center', color: '#fff', fontSize: 22}}> Medical Reminder </Text>
+      
+          </View>
+      
+          );
+      
+          return Sticky_header_View;
+      };
+
+    FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#607D8B",
+        }}
+      />
+    );
+    }
 
 
 render() {
@@ -209,6 +224,43 @@ render() {
             </TouchableOpacity>
         </View>
 
+        {
+          allItems != '' ?
+       
+        <View style={styles.list}>
+        <List>
+        <FlatList
+              contentContainerStyle={{
+                alignSelf: 'flex-start'
+            }}
+            style={styles.listView}
+            data={Object.keys(allItems)}
+            renderItem={({ item }) => (
+          <ListItem
+              roundAvatar
+              title={'${item.value'}
+              subtitle={'dosage'+ item.dosage}
+              />
+          
+          )}
+          keyExtractor={item => allItems[item].id}
+          key={allItems.id}
+          numColumns={2}
+          horizontal={false}
+          columnWrapperStyle={styles.colwrapper}
+          listheadercomponent={this.renderHeader}
+          stickyHeaderIndices={[0]}
+          listheadercomponent={this.renderHeader}
+          ItemSeparatorComponent = {this.FlatListItemSeparator}
+         
+        />
+         </List>
+    </View>
+   
+        
+      : 
+          <Text> No Reminders</Text>
+      }
              
         <View style ={styles.buttonStyler}>
             <Button color='rgba(0,0,0,0.5)'
@@ -223,29 +275,9 @@ render() {
                     title="help?" 
                     size={30}
                     onPress={this._helpButton}/>
-
-        {allItems != '' ?
-      
-      <View style={styles.list}>
-      {Object.values(allItems)
-        .reverse()
-        .map(item => (
-      
-      <FlatList
-            data={item.id}
-            key={item.id}
-            style={styles.container}
-            columnWrapperStyle={styles.column}
-            numColumns={3}
-            renderItem={item.id}
-            />
-        ))}
-            
-    </View>
-      : 
-            <Text> No Reminders Set </Text>
-        }
         </View>
+
+        
         </ImageBackground>
             )} else 
             return (
@@ -253,9 +285,9 @@ render() {
                 <ActivityIndicator size='large' color="white" />
             </ImageBackground>
         );
+      };
     };
-};
-
+    
 
 const styles = StyleSheet.create ({
     text: 
@@ -301,42 +333,44 @@ const styles = StyleSheet.create ({
           flex: 1,
           marginTop: 10,
           flexDirection: 'row',
+          alignItems: 'stretch',
+          justifyContent: 'center',
+
         },
         buttonDay: {
           flex: 1,
           height: 45,
+          marginTop: 40,
           borderRadius: 45,
           backgroundColor: colors.lightblue,
           opacity: 1,
         },
         buttonWeek: {
-          flex: 1, 
+          flex: 1,
+          marginTop: 40,
           height: 45,
           borderRadius: 45,
           backgroundColor: colors.green1,
         },
         list: {
-          flex: 1,
-          flexDirection: 'column',
-          alignItems: 'stretch',
-          backgroundColor: colors.green1,
+          flexDirection: 'row',
+          flex: 0.5,
+          alignItems: 'center',
+          marginBottom: 30,
+          backgroundColor: colors.lightWhite,
           color: 'black',
+          fontSize: 20,
+          paddingVertical: 20
         },
-        container: {
-          flex: 1,
-          paddingTop: 10,
-          flexDirection: 'column',
+        colHeader: {
+          fontSize: 20,
+
         },
-        list: {
-          justifyContent: 'space-around',
-        },
-        column: {
-          flexShrink: 1,
-        },
-        card: {
-          width: 10,
-          margin: 10,
-        },
+        colwrapper: {
+          backgroundColor: colors.lightWhite,
+          borderWidth: 5,
+          backgroundColor: colors.green1
+        }
 
 });
 export default Home;
