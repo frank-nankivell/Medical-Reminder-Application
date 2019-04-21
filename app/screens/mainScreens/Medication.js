@@ -8,6 +8,7 @@ import ButtonNew from '../../components/Button';
 import InputMedication from '../../components/InputMedication';
 import DatePicker from 'react-native-datepicker'
 import uuid from 'uuid/v1';
+import itemListText from '../../constants/colors';
 import colors from '../../constants/colors';
 import InputDate from '../../components/InputDate'
 import { Calendar, 
@@ -158,12 +159,13 @@ class Medication extends Component {
                     }
                   };
                   this.saveItems(newState.allItems);
+                 // this.props.navigation.navigate('Home');
                   return { ...newState };
-                  
+ 
+                
                 });
               }
             };
-
 
 
       saveItems = newItem => {
@@ -231,13 +233,12 @@ class Medication extends Component {
                     customStyles={{
                       dateInput: {
                         color: 'black',
-                        fontSize: 25,
+                        fontSize: 30,
                         marginHorizontal: 25,
                         width: WIDTH -55,
                         height:40,
                         borderRadius: 45,
-                      
-                        backgroundColor: '#6EC3CF',
+                        backgroundColor: 'white',
                         justifyContent: 'center',
                         marginTop: 10,
                         marginBottom: 10,
@@ -344,7 +345,7 @@ const styles = StyleSheet.create ({
           },
           input: {
             borderBottomColor: 'rgba(0,0,0,0.5)',
-            paddingLeft:10,
+            paddingLeft:25,
             flex: 0.3,
             fontSize: 25,
             width: WIDTH -55,
@@ -353,12 +354,15 @@ const styles = StyleSheet.create ({
             borderColor: 'rgba(0,0,0,0.5)',
             backgroundColor: 'white',
             borderBottomWidth: 1,
-            color: 'rgba(0,0,0,0.5)',
+            color: colors.green1,
+            fontWeight: '500',
+            fontSize: 16,
           },
           inputDate: {
             flex: 0.15,
             width: WIDTH -55,
             borderRadius: 55,
+            borderBottomWidth: 0
           },
 
           btnSubmit: {

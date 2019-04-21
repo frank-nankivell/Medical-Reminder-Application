@@ -5,14 +5,17 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  Platform
+  Platform,
+  Alert
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
   itemListText,
   itemListTextStrike,
   circleInactive,
   circleActive,
+  pillColor,
   deleteIconColor
 } from '../constants/colors';
 const { height, width } = Dimensions.get('window');
@@ -25,8 +28,9 @@ class List extends Component {
       completeItem(id);
     }
   };
+
   render() {
-    const { text, deleteItem, id, isCompleted } = this.props;
+    const { value, dosage, endDate, notes, deleteItem, id, isCompleted, showItem} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.column}>
@@ -51,14 +55,28 @@ class List extends Component {
                 : { color: itemListText }
             ]}
           >
-            {text}
+            {value}
+            </Text>
+          </View>
+          <TouchableOpacity onPressOut={() => showItem(value, notes, endDate, dosage)}>
+          <View style={styles.columnDosage}>
+             <MaterialCommunityIcons
+                name="pill"
+                size={24}
+                color={pillColor}
+              />
+             
+          <Text
+            style={styles.text}>
+            {dosage}
           </Text>
         </View>
+        </TouchableOpacity>
         {isCompleted ? (
           <View style={styles.button}>
             <TouchableOpacity onPressOut={() => deleteItem(id)}>
               <MaterialIcons
-                name="delete-forever"
+                name="done"
                 size={24}
                 color={deleteIconColor}
               />
@@ -73,7 +91,7 @@ const styles = StyleSheet.create({
   container: {
     width: width - 50,
     flexDirection: 'row',
-    borderRadius: 5,
+    borderRadius: 45,
     backgroundColor: 'white',
     height: width / 8,
     alignItems: 'center',
@@ -99,7 +117,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: width / 1.5
   },
+  columnDosage:  {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight:10
+  },
   text: {
+    fontWeight: '500',
+    fontSize: 16,
+    marginVertical: 15
+  },
+  dosage: {
     fontWeight: '500',
     fontSize: 16,
     marginVertical: 15
@@ -112,7 +140,9 @@ const styles = StyleSheet.create({
     margin: 10
   },
   button: {
-    marginRight: 10
+    marginLeft: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   }
 });
 export default List;

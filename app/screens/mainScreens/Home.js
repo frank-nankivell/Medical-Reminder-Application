@@ -1,62 +1,58 @@
 import React, {Component} from 'react';
 import {
     ScrollView,
+    StatusBar,
     Text,
     View,
     TouchableOpacity,
     Image,
-    StatusBar,
     Button,
-    FlatList,
+    AlertIOS,
+    Platform,
+    Dimensions,
     ActivityIndicator,
     AsyncStorage,
     ImageBackground,
     StyleSheet } from 'react-native';
 
-import {
-  Container,  
-  Content, 
-  Icon, 
-  Left, 
-  Right,
-  List, 
-  ListItem  }
-  from 'native-base';
-
 
 import colors from '../../constants/colors';
+const { height, width } = Dimensions.get('window');
 
-//import List from '../../components/List';
+import List from '../../components/List';
 import bgImage from '../../images/background1.jpg';
 import logo from '../../images/logo.png'
 import Header from '../../components/Header';
 import { Title } from 'native-base';
 const headerTitle = 'Your Medication Reminders';
+const  { width: WIDTH} = Dimensions.get('window');
 
 class Home extends Component {
     state = {
       loadingItems: false,
-      };
-        componentDidMount = () => {
+      allItems: {},
+      isCompleted: false,
+    };
+         componentDidMount = () => {
           this.loadingItems();
   }
 
     loadingItems = async () => {
 		try {
-      const CurrentDate = this.state.currrentDate;
       const allItems = await AsyncStorage.getItem('MedicationReminder');
 			this.setState({
         loadingItems: true,
         currentDate: this.getCurrentDate(),
-        weekItems: {},
-        todayItems: {},
-				allItems: JSON.parse(allItems) || {}
+				allItems: JSON.parse(allItems)|| {}
       });
       console.log()
-      console.log(JSON.parse(allItems)) // check that items have loaded on start
+      console.log(JSON.parse(allItems,'items to render')) // check that items have loaded on start
 		} catch (err) {
-			console.log(err);
+			console.log(err,'failure');
 		}
+  };
+
+  _getWeekReminders = () => {
   };
 
     getCurrentDate = () => {
@@ -81,7 +77,10 @@ class Home extends Component {
         console.log(error.message);
       }
     };
-    _keyExtractor = (item, index) => item.id;
+
+
+
+     //_keyExtractor = (item, index) => item.id;
 
 
     _getDayReminders = () => {
@@ -95,42 +94,38 @@ class Home extends Component {
       })
     }; */
 
-    _getWeekReminders = () => {
-      this.setState({
-        day: false
-      })
-    };
+   
 
 
     deleteItem = id => {
-            this.setState(prevState => {
-              const allItems = prevState.allItems;
-              delete allItems[id];
-              const newState = {
-                ...prevState,
-                ...allItems
-              };
-              this.saveItems(newState.allItems);
-              return { ...newState };
-            });
-          };
+      this.setState(prevState => {
+        const allItems = prevState.allItems;
+        delete allItems[id];
+        const newState = {
+          ...prevState,
+          ...allItems
+        };
+        this.saveItems(newState.allItems);
+        return { ...newState };
+      });
+    };
     
       completeItem = id => {
-            this.setState(prevState => {
-              const newState = {
-                ...prevState,
-                allItems: {
-                  ...prevState.allItems,
-                  [id]: {
-                    ...prevState.allItems[id],
-                    isCompleted: true
-                  }
-                }
-              };
-              this.saveItems(newState.allItems);
-              return { ...newState };
-            });
+        this.setState(prevState => {
+          const newState = {
+            ...prevState,
+            allItems: {
+              ...prevState.allItems,
+              [id]: {
+                ...prevState.allItems[id],
+                isCompleted: true
+              }
+            }
           };
+          this.saveItems(newState.allItems);
+          return { ...newState };
+        });
+      };
 
           incompleteItem = id => {
             this.setState(prevState => {
@@ -158,7 +153,7 @@ class Home extends Component {
             }
         };
         _helpButton = () => {
-          Alert.alert('help')
+          AlertIOS.alert('help')
         }
         
 
@@ -189,6 +184,13 @@ class Home extends Component {
     );
     }
 
+    saveItems = newItem => {
+      const saveItem = AsyncStorage.setItem('MedicationReminder', JSON.stringify(newItem));
+    };
+
+    showItem = (value, notes, endDate, dosage) => {
+      AlertIOS.alert('Your Medication notes' + notes+  '\n End date for Medication is '+ endDate)
+    };
 
 render() {
     const { loadingItems, allItems } = this.state;
@@ -197,12 +199,6 @@ render() {
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <View style={styles.centered}>
               <Header title={headerTitle} />
-        </View>
-
-        <View style={styles.logoContainer}>
-        <Image source={logo}
-        style={styles.logo}
-        />
         </View>
        
         <View style={styles.toggleButtons} >
@@ -225,41 +221,27 @@ render() {
         </View>
 
         {
-          allItems != '' ?
+          allItems === undefined || allItems.length == 0  ?
        
         <View style={styles.list}>
-        <List>
-        <FlatList
-              contentContainerStyle={{
-                alignSelf: 'flex-start'
-            }}
-            style={styles.listView}
-            data={Object.keys(allItems)}
-            renderItem={({ item }) => (
-          <ListItem
-              roundAvatar
-              title={'${item.value'}
-              subtitle={'dosage'+ item.dosage}
-              />
-          
-          )}
-          keyExtractor={item => allItems[item].id}
-          key={allItems.id}
-          numColumns={2}
-          horizontal={false}
-          columnWrapperStyle={styles.colwrapper}
-          listheadercomponent={this.renderHeader}
-          stickyHeaderIndices={[0]}
-          listheadercomponent={this.renderHeader}
-          ItemSeparatorComponent = {this.FlatListItemSeparator}
-         
-        />
-         </List>
-    </View>
-   
+            <ScrollView contentContainerStyle={styles.scrollableList}>
+              {Object.values(allItems)
+                .reverse()
+                .map(item => (
+                  <List
+                    key={item.id}
+                    {...item}
+                    showItem={this.showItem}
+                    deleteItem={this.deleteItem}
+                    completeItem={this.completeItem}
+                    incompleteItem={this.incompleteItem}
+                  />
+                ))}
+        </ScrollView>
+        </View>
         
       : 
-          <Text> No Reminders</Text>
+          <Text style > No Reminders</Text>
       }
              
         <View style ={styles.buttonStyler}>
@@ -339,28 +321,66 @@ const styles = StyleSheet.create ({
         },
         buttonDay: {
           flex: 1,
-          height: 45,
+          opacity: 1,
           marginTop: 40,
           borderRadius: 45,
           backgroundColor: colors.lightblue,
-          opacity: 1,
+          width: width - 50,
+          height: width / 10,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginVertical: 5,
+          ...Platform.select({
+            ios: {
+              shadowColor: 'rgb(50,50,50)',
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              shadowOffset: {
+                height: 2,
+                width: 0
+              }
+            },
+            android: {
+              elevation: 5
+            }
+          })
         },
         buttonWeek: {
           flex: 1,
+          opacity: 1,
           marginTop: 40,
-          height: 45,
           borderRadius: 45,
           backgroundColor: colors.green1,
+          width: width - 50,
+          height: width / 10,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginVertical: 5,
+          ...Platform.select({
+            ios: {
+              shadowColor: 'rgb(50,50,50)',
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              shadowOffset: {
+                height: 2,
+                width: 0
+              }
+            },
+            android: {
+              elevation: 5
+            }
+          })
         },
         list: {
-          flexDirection: 'row',
-          flex: 0.5,
+          width: WIDTH -25,
+          marginTop: 20,
+          marginBottom: 280,
+          paddingLeft: 25,
           alignItems: 'center',
-          marginBottom: 30,
-          backgroundColor: colors.lightWhite,
-          color: 'black',
-          fontSize: 20,
-          paddingVertical: 20
+          alignSelf: "stretch",
+        },
+        scrollableList: {
+          marginTop: 15
         },
         colHeader: {
           fontSize: 20,

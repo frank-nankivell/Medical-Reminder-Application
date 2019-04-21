@@ -71,13 +71,11 @@ class LocationHome extends React.Component {
     fetch (url)
       .then((response) => response.json())
       .then((responseJson) => {
-       this.setState(prevState => ({
-           markers: responseJson.candidates[1],
-           isLoading: false
-        }))
-
-        console.log('print1', this.state.markers)
-
+       this.setState({
+           markers: responseJson,
+        });
+        console.log('print1', JSON.parse(this.state.markers))
+    
       })
         .catch((error) => {
           console.log(error);
@@ -85,11 +83,11 @@ class LocationHome extends React.Component {
       });
 
   };
-  
+
     
  
   render()  {
-    console.log('dsfghfdszxcfdg',markers)
+    console.log('dsfghfdszxcfdg',(JSON.parse(markers).candidates))
     if (this.state.isLoading == true) {
     return(
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
@@ -99,7 +97,9 @@ class LocationHome extends React.Component {
       </ImageBackground>
     )};
 
-    const { location, markers } = this.state;
+    const { a, b } = this.state;
+  //  const markers = JSON.parse(a);
+  //  const location = JSON.parse(b);
     return (
     <ImageBackground source={bgImage} style={styles.backgroundContainer}>
      <MapView
@@ -126,9 +126,8 @@ class LocationHome extends React.Component {
       </MapView>
   </ImageBackground>
     );
-  };
 };
-
+};
 const styles = StyleSheet.create ({
   backgroundContainer: {
     flex: 1,
