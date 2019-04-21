@@ -1,12 +1,13 @@
 import React from 'react';
-import {Text, StyleSheet, ActivityIndicator, ImageBackground, View, alert  } from 'react-native';
-import {MapView, Marker} from 'expo';
+import {Text,LogoTitle, Button, SafeAreaView, StyleSheet, ActivityIndicator, ImageBackground, View, alert, LOCATION  } from 'react-native';
+import {MapView, Marker, Location, Permissions} from 'expo';
 import {Constants} from 'expo';
 import { ScrollView, RotationGestureHandler } from 'react-native-gesture-handler';
 const k = 'AIzaSyDPC3aFjcV7EIznzmBPT3zaYqNlizE6PsA';
 import bgImage from '../../images/background1.jpg';
 import { lastFromTime } from 'uuid-js';
 import { isLoading } from 'expo-font';
+import { withOrientation } from 'react-navigation';
 
 
 
@@ -18,22 +19,50 @@ class LocationHome extends React.Component {
     this.state = {
       isLoading: true,
       markers: [],
+      location: null,
+      radius: '5000'
     };
   }
 
   componentDidMount() {
-    this.fetchMarkerData();
+    this.getLocationAsync();
 }
 
-  fetchMarkerData() {
-    fetch('https://maps.googleapis.com/maps/api/place/findplacefromtext/json?&input=Hospital&inputtype=textquery&type=hospital&fields=formatted_address,name,opening_hours,geometry&locationbias=circle:2000@37.33659906,-122.08220411&key=AIzaSyDPC3aFjcV7EIznzmBPT3zaYqNlizE6PsA')
-    //fetch('https://feeds.citibikenyc.com/stations/stations.json') 
+  getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied'
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    await this.setState({ location });
+    console.log('user location : ', location);
+    this.fetchMarkerData(location);
+};
+
+  fetchMarkerData(location) {
+    //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&fields=formatted_address,name,opening_hours,geometry&radius=1500&type=pharmacy&keyword=pharmacy&key=AIzaSyDPC3aFjcV7EIznzmBPT3zaYqNlizE6PsA
+    
+    var googlePlace='https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
+    var location = 'location=' +location.coords.latitude + ','+ location.coords.longitude;
+    var radius = 'radius='+ this.state.radius;
+    var type='type=pharmacy';
+    var keyword = 'keyword=pharmacy';
+    var fields = 'fields=formatted_address,name,opening_hours,geometry';
+    var key= 'key='+ k;
+    var url = googlePlace + '&' + location + '&' + radius + '&' + type + '&'+  keyword + '&' + fields  + '&' + key ;
+
+    console.log('url to run with', url)
+    fetch(url) 
     .then((response) => response.json())
       .then((responseJson) => {
         this.setState({ 
           isLoading: false,
-          markers: responseJson.candidates, 
+          markers: responseJson.results, 
         });
+        console.log('api reponse: ',responseJson)
       })
       .catch((error) => {
         console.log(error);
@@ -42,26 +71,6 @@ class LocationHome extends React.Component {
 
   // on mount find location and fetchmarkerdata
 /*
-  fetchLocationData() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        var lat, lng, userLocation;
-        lat = position.coords.latitude;
-        lng = position.coords.longitude;
-        userLocation = position.coords;
-        this.setState({
-          userLocation: position.coords,
-          error: null,
-          locationFound: true,
-        });
-        console.log('checking for state of coords', lat, lng)
-        return lat,lng, userLocation;
-      },
-      (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
-
-  }
 
   fetchMarkerData(lat, lng) {
     // Creation of url string for google maps as per documentatiom https://developers.google.com/places/
@@ -100,24 +109,37 @@ var newurl = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?
 
   // renders list of hospitals on the map
 render() {
+  const region = this.state.location;
+  if (this.state.isLoading == true && this.state.location == null )   {
+    return(
+      <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+      <Text style={styles.loading}> Loading Map</Text>
+      <ActivityIndicator size='large' style={styles.activityContainer}>
+      </ActivityIndicator>
+      </ImageBackground>
+    )} else {
     return (
-
+      <SafeAreaView style={styles.container}>
+      
       <MapView
+      showsUserLocation
+      showsCompass
+      showsMyLocationButton
       style={{ flex: 1 }}
       region={{
-        latitude: 37.3691242,
-        longitude: -122.0798702,
+        latitude: this.state.location.coords.latitude,
+        longitude: this.state.location.coords.longitude,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       }}
   >
-          {this.state.isLoading ? null : this.state.markers.map((marker, index) => {
+          {this.state.markers.map((marker, index) => {
        const coords = {
            latitude: marker.geometry.location.lat,
            longitude: marker.geometry.location.lng,
        };
   
-       const metadata = `Status: ${marker.statusValue}`;
+       const metadata = ('Rating'+ marker.rating + '\n' + marker.vicinity);
   
        return (
            <MapView.Marker
@@ -127,11 +149,13 @@ render() {
               description={metadata}
            />
        );
-    })}
-  </MapView>
-    );
+      })}
+      </MapView>
+    </SafeAreaView>
+      );
+    };
+    }
   };
-};
 
 const styles = StyleSheet.create ({
   backgroundContainer: {
@@ -141,8 +165,16 @@ const styles = StyleSheet.create ({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  loading: {
+    color: 'white',
+    fontSize: 25,
+    marginBottom:20,
+  },
   activityContainer: {
     color:'white'
+  },
+  container: {
+    flex: 1, backgroundColor: '#fff',
   }
 });
 

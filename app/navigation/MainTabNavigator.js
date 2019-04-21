@@ -3,7 +3,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import {Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator, tabBarOptions} from 'react-navigation';
+import { createStackNavigator, HeaderBackButton, createBottomTabNavigator, tabBarOptions} from 'react-navigation';
 
 import HomeScreen from  '../screens/mainScreens/Home';
 import MedicationScreen from '../screens/mainScreens/Medication';
@@ -15,12 +15,14 @@ const HomeStack = createStackNavigator({
 
   });
   
-  HomeStack.navigationOptions = {
+  HomeStack.navigationOptions = ({ navigation }) => ({
+    headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)}/>,
     tabBarLabel: 'Home',
     tabBarIcon: ({ tintColor }) => (
       <Icon name="ios-home" size={35}/>
     )
-};
+});
+
   const MedicationStack = createStackNavigator({
     Medication: MedicationScreen,
     headerTitle: 'Medication',

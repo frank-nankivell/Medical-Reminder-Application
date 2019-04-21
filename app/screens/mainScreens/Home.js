@@ -28,14 +28,12 @@ const headerTitle = 'Your Medication Reminders';
 const  { width: WIDTH} = Dimensions.get('window');
 
 class Home extends Component {
-  constructor() {
     state = {
       loadingItems: false,
       allItems: {},
       currentDate: null,
       isCompleted: false,
     };
-  };
 
 
   componentDidMount = () => {
@@ -82,13 +80,6 @@ class Home extends Component {
         console.log(error.message);
       }
     };
-    _keyExtractor = (item, index) => item.id;
-
-
-
-     //_keyExtractor = (item, index) => item.id;
-
-
     _getDayReminders = () => {
     };
 
@@ -99,9 +90,6 @@ class Home extends Component {
         todayItems: JSON.parse(todayItems) || {}
       })
     }; */
-
-   
-
 
     deleteItem = id => {
       this.setState(prevState => {
@@ -162,33 +150,14 @@ class Home extends Component {
           AlertIOS.alert('help')
         }
         
-
-      Render_FlatList_Sticky_header = () => {
-      
-          var Sticky_header_View = (
-      
-          <View style={styles.header_style}>
-      
-            <Text style={{textAlign: 'center', color: '#fff', fontSize: 22}}> Medical Reminder </Text>
-      
-          </View>
-      
-          );
-      
-          return Sticky_header_View;
-      };
-
-    FlatListItemSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: "100%",
-          backgroundColor: "#607D8B",
-        }}
-      />
-    );
-    }
+    _navReminder = () => {
+      try {
+        this.props.navigation.navigate('Auth');
+      } catch (error) {
+        // Error retrieving data
+        console.log(error.message);
+      }
+    };
 
     saveItems = newItem => {
       const saveItem = AsyncStorage.setItem('MedicationReminder', JSON.stringify(newItem));
@@ -246,8 +215,20 @@ render() {
         </ScrollView>
         </View>
         
-      : 
-          <Text style > No Reminders</Text>
+      :   
+        <View style={styles.reminderList}>
+          <Text style={styles.standardText}> 
+                No Reminders currently Set
+            </Text>
+            <TouchableOpacity style={styles.buttonNav}>
+            <Button 
+            style={styles.buttonWeek}
+              title="Make a reminder now" 
+              color="rgba(0,0,0,0.5)" 
+              onPress={this._navReminder}>
+            </Button>
+            </TouchableOpacity>
+           </View>
       }
              
         <View style ={styles.buttonStyler}>
@@ -286,8 +267,13 @@ const styles = StyleSheet.create ({
         textAlign: 'center',
         marginTop: 150
         },
+        reminderList: {
+          flex: 1, 
+          alignItems: 'center',
+          marginBottom: 275,
+        },
     standardText: {
-        color: 'rgba(0,0,0,0.5)', 
+        color: 'white', 
         fontSize: 20,
         fontWeight: '500',
         marginTop: 15,
@@ -325,13 +311,15 @@ const styles = StyleSheet.create ({
           justifyContent: 'center',
 
         },
+
+
         buttonDay: {
           flex: 1,
-          opacity: 1,
+          opacity: 0.75,
           marginTop: 40,
           borderRadius: 45,
-          backgroundColor: colors.lightblue,
-          width: width - 50,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          width: width - 55,
           height: width / 10,
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -376,7 +364,16 @@ const styles = StyleSheet.create ({
           backgroundColor: colors.lightWhite,
           borderWidth: 5,
           backgroundColor: colors.green1
-        }
+        },
+        buttonNav: {
+        width: WIDTH -55,
+        height: 45,
+        borderRadius: 45,
+        backgroundColor: '#4EEEFF',
+        justifyContent: 'center',
+        marginTop: 30,
+        opacity: 1,
+        },
 
 });
 export default Home;
