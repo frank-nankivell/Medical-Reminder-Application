@@ -41,9 +41,7 @@ const  { width: WIDTH} = Dimensions.get('window');
 
 
 class Medication extends Component {
-    constructor() {
-        super()
-        this.state = {
+    state = {
             allItems: {},
             inputValue: '',
             inputDosage: '',
@@ -51,16 +49,15 @@ class Medication extends Component {
             inputInterval:'',
             inputNotes: '',
             inputEndDate: '',
-            currentDate: this.getCurrentDate(),
+            currentDate: '',
             created: '',
             validateScreen: false,
             reminderScreen: false,
             thanks: false,
             loadingItems: false,
             isCompleted: false
-
         };
-    };
+
       _onChangedDosage(value) {
       this.setState({
         inputDosage: value.replace(/[^0-9]/g, ''),
@@ -80,18 +77,6 @@ class Medication extends Component {
       newdate = year + "-" + month + "-" + day;
         return newdate;
     };
-  
-      loadingItems = async () => {
-        try {
-          const allItems = await AsyncStorage.getItem('Medication');
-          this.setState({
-            loadingItems: true,
-            allItems: JSON.parse(allItems) || {}
-          });
-        } catch (err) {
-          console.log(err);
-        }
-      };
 
       _onValidateScreen = () => {
         const { inputValue, inputDosage, inputPerDay, inputInterval, inputNotes, inputEndDate} = this.state;
@@ -138,11 +123,10 @@ class Medication extends Component {
                       interval: inputInterval,
                       notes: inputNotes,
                       endDate: inputEndDate,
-                      createdAt: this.state.currentDate,
+                      createdAt: this.getCurrentDate(),
                     }
                   };
-                  console.log(newItemObject);
-
+                 // console.log(newItemObject);
                   const newState = {
                     ...prevState,
                     inputValue: '',
@@ -165,6 +149,7 @@ class Medication extends Component {
                 
                 });
               }
+              this.setState({ stillLoading: false }, () => this.props.navigation.navigate('Home') );
             };
 
 

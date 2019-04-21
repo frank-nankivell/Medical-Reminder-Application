@@ -3,13 +3,7 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-<<<<<<< HEAD
-  "expoServerNgrokUrl": "https://n5-i9f.anonymous.app-v2-participant.exp.direct",
-  "packagerNgrokUrl": "https://packager.n5-i9f.anonymous.app-v2-participant.exp.direct",
-  "ngrokPid": 63602
-=======
-  "expoServerNgrokUrl": "https://k2-m7m.anonymous.app-v2-participant.exp.direct",
-  "packagerNgrokUrl": "https://packager.k2-m7m.anonymous.app-v2-participant.exp.direct",
-  "ngrokPid": 47928
->>>>>>> master
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

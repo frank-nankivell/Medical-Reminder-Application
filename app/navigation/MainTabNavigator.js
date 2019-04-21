@@ -23,6 +23,7 @@ const HomeStack = createStackNavigator({
 };
   const MedicationStack = createStackNavigator({
     Medication: MedicationScreen,
+    headerTitle: 'Medication',
   });
   
   MedicationStack.navigationOptions = {
