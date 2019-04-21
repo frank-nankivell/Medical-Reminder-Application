@@ -19,7 +19,7 @@ export default class Splash extends Component {
 
     // Method to navigate to order form
   _orderTest = async () => {
-    this.props.navigation.navigate('Order');
+    this.props.navigation.navigate('Location');
   };
 
   _navSignIn =  async () => {
@@ -29,6 +29,7 @@ export default class Splash extends Component {
   _onPressAbout() {
     Alert.alert('This is an application for managing your medicine. In an emergency you can use our healthcare finder, otherwise login to update your medicine dosage and check if you are on track with your dosage!')
   }
+  
 
 
     render() {
