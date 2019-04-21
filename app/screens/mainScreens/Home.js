@@ -6,20 +6,39 @@ import {
     View,
     TouchableOpacity,
     Image,
+<<<<<<< HEAD
     Button,
     AlertIOS,
     Platform,
     Dimensions,
+=======
+    StatusBar,
+    Button,
+    FlatList,
+>>>>>>> master
     ActivityIndicator,
     AsyncStorage,
     ImageBackground,
     StyleSheet } from 'react-native';
 
+<<<<<<< HEAD
+=======
+import {
+  Container, 
+  Content, 
+  Icon, 
+  Left, 
+  Right,
+  List, 
+  ListItem  }
+  from 'native-base';
+
+>>>>>>> master
 
 import colors from '../../constants/colors';
 const { height, width } = Dimensions.get('window');
 
-import List from '../../components/List';
+//import List from '../../components/List';
 import bgImage from '../../images/background1.jpg';
 import logo from '../../images/logo.png'
 import Header from '../../components/Header';
@@ -77,6 +96,7 @@ class Home extends Component {
         console.log(error.message);
       }
     };
+    _keyExtractor = (item, index) => item.id;
 
 
 
@@ -94,7 +114,15 @@ class Home extends Component {
       })
     }; */
 
+<<<<<<< HEAD
    
+=======
+    _getWeekReminders = () => {
+      this.setState({
+        day: false
+      })
+    };
+>>>>>>> master
 
 
     deleteItem = id => {
@@ -153,7 +181,11 @@ class Home extends Component {
             }
         };
         _helpButton = () => {
+<<<<<<< HEAD
           AlertIOS.alert('help')
+=======
+          Alert.alert('help')
+>>>>>>> master
         }
         
 
@@ -183,10 +215,13 @@ class Home extends Component {
       />
     );
     }
+<<<<<<< HEAD
 
     saveItems = newItem => {
       const saveItem = AsyncStorage.setItem('MedicationReminder', JSON.stringify(newItem));
     };
+=======
+>>>>>>> master
 
     showItem = (value, notes, endDate, dosage) => {
       AlertIOS.alert('Your Medication notes' + notes+  '\n End date for Medication is '+ endDate)
@@ -221,6 +256,7 @@ render() {
         </View>
 
         {
+<<<<<<< HEAD
           allItems === undefined || allItems.length == 0  ?
        
         <View style={styles.list}>
@@ -242,6 +278,43 @@ render() {
         
       : 
           <Text style > No Reminders</Text>
+=======
+          allItems != '' ?
+       
+        <View style={styles.list}>
+        <List>
+        <FlatList
+              contentContainerStyle={{
+                alignSelf: 'flex-start'
+            }}
+            style={styles.listView}
+            data={Object.keys(allItems)}
+            renderItem={({ item }) => (
+          <ListItem
+              roundAvatar
+              title={'${item.value'}
+              subtitle={'dosage'+ item.dosage}
+              />
+          
+          )}
+          keyExtractor={item => allItems[item].id}
+          key={allItems.id}
+          numColumns={2}
+          horizontal={false}
+          columnWrapperStyle={styles.colwrapper}
+          listheadercomponent={this.renderHeader}
+          stickyHeaderIndices={[0]}
+          listheadercomponent={this.renderHeader}
+          ItemSeparatorComponent = {this.FlatListItemSeparator}
+         
+        />
+         </List>
+    </View>
+   
+        
+      : 
+          <Text> No Reminders</Text>
+>>>>>>> master
       }
              
         <View style ={styles.buttonStyler}>
@@ -321,7 +394,11 @@ const styles = StyleSheet.create ({
         },
         buttonDay: {
           flex: 1,
+<<<<<<< HEAD
           opacity: 1,
+=======
+          height: 45,
+>>>>>>> master
           marginTop: 40,
           borderRadius: 45,
           backgroundColor: colors.lightblue,
@@ -347,6 +424,7 @@ const styles = StyleSheet.create ({
         },
         buttonWeek: {
           flex: 1,
+<<<<<<< HEAD
           opacity: 1,
           marginTop: 40,
           borderRadius: 45,
@@ -381,6 +459,22 @@ const styles = StyleSheet.create ({
         },
         scrollableList: {
           marginTop: 15
+=======
+          marginTop: 40,
+          height: 45,
+          borderRadius: 45,
+          backgroundColor: colors.green1,
+        },
+        list: {
+          flexDirection: 'row',
+          flex: 0.5,
+          alignItems: 'center',
+          marginBottom: 30,
+          backgroundColor: colors.lightWhite,
+          color: 'black',
+          fontSize: 20,
+          paddingVertical: 20
+>>>>>>> master
         },
         colHeader: {
           fontSize: 20,
