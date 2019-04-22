@@ -9,7 +9,7 @@ import HomeScreen from  '../screens/mainScreens/Home';
 import MedicationScreen from '../screens/mainScreens/Medication';
 import LocationScreen from  '../screens/orderScreens/LocationHome';
 
-
+const tintColor = 'white'
 const HomeStack = createStackNavigator({
     Home: HomeScreen,
 
@@ -29,6 +29,7 @@ const HomeStack = createStackNavigator({
   });
   
   MedicationStack.navigationOptions = {
+    headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)}/>,
     tabBarLabel: 'Add reminder',
     tabBarIcon: ({ tintColor }) => (
       <Icon name="ios-add-circle" size={50}/>
@@ -37,10 +38,12 @@ const HomeStack = createStackNavigator({
 
   // Results Navigation 
   const LocationStack = createStackNavigator({
+
     Location: LocationScreen,
   });
   
   LocationStack.navigationOptions = {
+    headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)}/>,
     tabBarLabel: 'Pharmacy finder',
     tabBarIcon: ({ tintColor }) => (
       <Icon2 name="medical-bag" size={35}/>

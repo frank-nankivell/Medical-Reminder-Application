@@ -4,6 +4,8 @@ import {
     StatusBar,
     Text,
     View,
+    Modal,
+    TouchableHighlight,
     TouchableOpacity,
     Image,
     Button,
@@ -14,13 +16,15 @@ import {
     AsyncStorage,
     ImageBackground,
     StyleSheet } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../constants/colors';
 const { height, width } = Dimensions.get('window');
 import List from '../../components/List';
 import bgImage from '../../images/background1.jpg';
 import logo from '../../images/logo.png'
+import pillColor from '../../constants/colors';
 import Header from '../../components/Header';
 import { Title } from 'native-base';
 const headerTitle = 'Your Medication Reminders';
@@ -30,9 +34,8 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
- 
       currentDate: null,
-
+      modalVisible: false,
       isCompleted: false,
 
       allItems: {},
@@ -45,7 +48,8 @@ class Home extends Component {
 
 
   componentDidMount = () => {
-    this.loadingItems();
+    this._onFocusListener = this.props.navigation.addListener('didFocus', (payload) => {this.loadingItems();
+    });
   };
 
     loadingItems = async () => {
@@ -63,10 +67,14 @@ class Home extends Component {
 		}
   };
 
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
     _loadingToday = async () => {
       try {
         var allItems, currentDate, todayItems; 
-        allItems = await AsyncStorage.getItem('MedicationReminder');
+        allItems = await AsyncStorage.multiGet('MedicationReminder');
         currentDate = this.getCurrentDate();
         todayItems = allItems.filter((item) => item.createdAt === currentDate )
         this.setState({
@@ -78,7 +86,6 @@ class Home extends Component {
            console.log(err,'failure');
          }
        };
-
   _getWeekReminders = () => {
   };
 
@@ -181,8 +188,10 @@ class Home extends Component {
     };
 
     showItem = (value, notes, endDate, dosage) => {
-      AlertIOS.alert('Your Medication notes' + notes+  '\n End date for Medication is '+ endDate)
+      AlertIOS.alert('Your Medication notes are... ' + notes+  '\n End date for Medication is '+ endDate)
     };
+
+
 
 render() {
     const { loadingItems, allItems, loadingPosition} = this.state;
@@ -193,25 +202,70 @@ render() {
               <Header title={headerTitle} />
         </View>
        
-        <View style={styles.toggleButtons} >
-        <TouchableOpacity style={styles.buttonDay}>
-          <Button 
-              style={styles.buttonDay}
-              title="Reminders for today" 
-              color="white" 
-              onPress={this._loadingToday}>
-            </Button>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonWeek}>
-          <Button 
-            style={styles.buttonWeek}
-              title="Reminders for this week" 
-              color="white" 
-              onPress={this._getWeekReminders}>
-            </Button>
-            </TouchableOpacity>
+        <View style={styles.backgroundModalContainer} >
+        <Modal
+          animationType="fade"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Back to home screen');
+          }}>
+          <View style={styles.backgroundModalContainer}>
+
+            <View style ={styles.textModalContainer}>
+
+              <Text
+              style={styles.textModalContainerStyle}
+              > This application is all about reminding you about your medication.</Text>
+               <Text
+               style={styles.textModalContainerStyle}
+              > When you create a reminder from the 'create reminders' this will then present itself on your home screen.</Text>
+              <Text
+              style={styles.textModalContainerStyle}
+              >If you want to find our more about each reminder you can select the pill Icon (like the one below) and a popup will appear.</Text>
+               <MaterialCommunityIcons
+                name="pill"
+                size={24}
+              />
+              <Text
+              style={styles.textModalContainerStyle}
+              >Otherwise you can select the circle and then the tick button to show you have completed it!</Text>
+              </View>
+              <TouchableOpacity style={styles.btnCanceModal}>
+                    <Button
+                    raised
+                    style ={styles.buttonStyler}
+                    title = "Okay I get it now"
+                    color="white"
+                    onPress={() => {
+                      this.setModalVisible(!this.state.modalVisible);
+                    }}>
+                    </Button>
+                  </TouchableOpacity>
+            </View>
+        </Modal>
         </View>
 
+        <View style={styles.modalContainer}>
+        <TouchableOpacity
+        style={
+          styles.buttonHelp}
+          onPress={() => {
+            this.setModalVisible(true);
+          }}>
+          <View style={styles.columnHelpTextPosition}>
+          <Text style={styles.columnHelpText}> Click to find out more...</Text>
+          
+          <View style={styles.columnHelpIcon}>
+          <MaterialIcons
+                name="help-outline"
+                size={35}
+                color={'white'}
+              />
+        </View>
+        </View>
+        </TouchableOpacity>
+      </View>
         {
            allItems.length != 0  && loadingPosition == 1?
        
@@ -249,18 +303,11 @@ render() {
       }
              
         <View style ={styles.buttonStyler}>
-            <Button color='rgba(0,0,0,0.5)'
+            <Button color='white'
                     style={styles.standardText} 
                     title="sign me out" 
                     size={30}
                     onPress={() => this.props.navigation.navigate('Auth')}/>
-        </View>
-        <View style ={styles.buttonHelp}>
-            <Button color='white'
-                    style={styles.standardText} 
-                    title="help?" 
-                    size={30}
-                    onPress={this._helpButton}/>
         </View>
 
         
@@ -282,12 +329,91 @@ const styles = StyleSheet.create ({
         color: 'white', 
         fontWeight: 'bold',
         textAlign: 'center',
-        marginTop: 150
+        marginTop: 30
+        },
+        backgroundModalContainer: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#6EC3CF'
+        },
+        btnCanceModal: {
+          width: WIDTH -55,
+          height: 45,
+          borderRadius: 45,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          justifyContent: 'center',
+          marginTop: 30,
+          opacity: 0.75
+        },
+        textModalContainer: {
+          flexDirection: 'column',
+          alignItems: 'center',
+        },
+        textModalContainerStyle: {
+          fontSize: 25, 
+        color: 'white', 
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginTop: 30
+        },
+        modalContainer: {
+          width: WIDTH -55,
+          height: width / 8,
+          flexDirection: 'row',
+          borderRadius: 45,
+          backgroundColor: '#5E99C9',
+          justifyContent: 'center',
+          marginTop: 5,
+          opacity: 1,
+          ...Platform.select({
+            ios: {
+              shadowColor: 'rgb(50,50,50)',
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              shadowOffset: {
+                height: 2,
+                width: 0
+              }
+            },
+          })
+        },
+        columnHelpView: {
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+        },
+        columnHelpTextPosition: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginLeft: 100,
+        },
+        columnHelpIcon: {
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          marginRight: 100
+
+        },
+        columnHelpText: {
+          fontSize: 20,
+          fontWeight: '300',
+          color: 'white',
+          flexDirection: 'row',
+          width: width / 1.5
         },
         reminderList: {
           flex: 1, 
           alignItems: 'center',
-          marginBottom: 275,
+          justifyContent: 'flex-start'
+        },
+        buttonStyler: {
+          width: WIDTH -55,
+          height: 45,
+          borderRadius: 45,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          justifyContent: 'center',
+          marginTop: 30,
+          opacity: 0.75,
+          marginBottom: 10,
         },
     standardText: {
         color: 'white', 
@@ -296,15 +422,14 @@ const styles = StyleSheet.create ({
         marginTop: 15,
         opacity: 2
         },
-    buttonStyler:{
-          marginTop: 50,
-          marginBottom: 10
-        },
-    buttonHelp: {
-          marginTop: 50,
-          marginBottom: 10,
-          paddingLeft: 250,
-  
+        btnLogin: {
+          width: WIDTH -55,
+          height: 45,
+          borderRadius: 45,
+          backgroundColor: '#4EEEFF',
+          justifyContent: 'center',
+          marginTop: 30,
+          opacity: 0.75
         },
       logo:{
           width: 60,
@@ -363,10 +488,10 @@ const styles = StyleSheet.create ({
         },
         list: {
           width: WIDTH -50,
-          paddingBottom: 250,
+          paddingBottom: 20,
           flexDirection: 'column',
           flex: 1,
-          alignItems: 'center',
+          alignItems: 'stretch',
           marginBottom: 30,
           color: 'black',
           fontSize: 20,

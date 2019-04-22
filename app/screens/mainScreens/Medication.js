@@ -165,8 +165,9 @@ class Medication extends Component {
               <Header title={headerTitle} />
             </View>
 
-            <View style={styles.centered} color='white'>
-              <Text> Below enter your medication dosage and end date to create a reminder </Text>
+            <View style={styles.centered}>
+              <Text style={
+                styles.text}> Below enter your medication dosage and end date to create a reminder </Text>
             </View>
 
             <View style={styles.inputContainer}>

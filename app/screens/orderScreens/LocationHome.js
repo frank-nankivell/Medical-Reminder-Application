@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text,LogoTitle, Button, SafeAreaView, StyleSheet, ActivityIndicator, ImageBackground, View, alert, LOCATION  } from 'react-native';
+import {Text,LogoTitle, Button, SafeAreaView, AsyncStorage, StyleSheet, ActivityIndicator, ImageBackground, View, alert, LOCATION  } from 'react-native';
 import {MapView, Marker, Location, Permissions} from 'expo';
 import {Constants} from 'expo';
 import { ScrollView, RotationGestureHandler } from 'react-native-gesture-handler';
@@ -7,8 +7,7 @@ const k = 'AIzaSyDPC3aFjcV7EIznzmBPT3zaYqNlizE6PsA';
 import bgImage from '../../images/background1.jpg';
 import { lastFromTime } from 'uuid-js';
 import { isLoading } from 'expo-font';
-import { withOrientation } from 'react-navigation';
-
+import { withOrientation, NavigationActions, HeaderBackButton} from 'react-navigation';
 
 
 
@@ -27,6 +26,17 @@ class LocationHome extends React.Component {
   componentDidMount() {
     this.getLocationAsync();
 }
+    navigationAction = async () => {
+      userID = await AsyncStorage.getItem('userToken');
+      console.log('initial id,', userID)
+      if(userID)
+      {
+       this.props.navigation.navigate('Home');
+      } else {
+        this.props.navigation.navigate('Splash');
+      }
+    };
+
 
   getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -113,6 +123,8 @@ render() {
   if (this.state.isLoading == true && this.state.location == null )   {
     return(
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+      <HeaderBackButton onPress={() => this.props.navigation.dispatch(NavigationActions.back())}>
+      </HeaderBackButton>
       <Text style={styles.loading}> Loading Map</Text>
       <ActivityIndicator size='large' style={styles.activityContainer}>
       </ActivityIndicator>
@@ -120,6 +132,8 @@ render() {
     )} else {
     return (
       <SafeAreaView style={styles.container}>
+      <HeaderBackButton onPress={this.navigationAction}>
+      </HeaderBackButton>
       
       <MapView
       showsUserLocation

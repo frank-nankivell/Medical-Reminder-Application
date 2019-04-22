@@ -3,6 +3,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import thirdcolor from '../../constants/colors'
 import Icon from 'react-native-vector-icons/Ionicons'
 import floatingBackButton from '../../components/floatingBackButton';
+import { withOrientation, NavigationActions, HeaderBackButton} from 'react-navigation';
+
 import { StyleSheet, 
           Text,
           TextInput,
@@ -56,7 +58,10 @@ export default class Login extends React.Component {
   
   render() {
     return (
+      
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+      <HeaderBackButton style={styles.HeaderBackButton} onPress={() => this.props.navigation.navigate('Splash')}>
+      </HeaderBackButton>
 
         <View style ={styles.logoContainer}>
           <Text style={styles.logoText}> Medical reminder app </Text>
@@ -103,6 +108,9 @@ export default class Login extends React.Component {
   }
 };
 const styles = StyleSheet.create({
+  HeaderBackButton: {
+    flex: 1, flexDirection: 'row'
+  },
   btnBack: {
     alignSelf: 'flex-end',
     position: 'absolute',
@@ -175,7 +183,7 @@ const styles = StyleSheet.create({
     width: WIDTH -55,
     height: 45,
     borderRadius: 45,
-    backgroundColor: '#4EEEFF',
+    backgroundColor: 'white',
     justifyContent: 'center',
     marginTop: 30,
     opacity: 0.75

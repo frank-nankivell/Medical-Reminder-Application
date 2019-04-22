@@ -7,6 +7,7 @@ import {
     Image,
     Alert,
     Dimensions,
+    AsyncStorage,
     TouchableOpacity,
     StyleSheet } from 'react-native';
 
@@ -17,6 +18,18 @@ export default class Splash extends Component {
         super()
     }
 
+    componentDidMount() {
+      this.clearTokenCache();
+    };
+
+    clearTokenCache = async () => {
+        try {
+          await AsyncStorage.removeItem('Medication');
+          await AsyncStorage.removeItem('userToken');
+        } catch (err) {
+          console.log(err);
+        }
+    };
     // Method to navigate to order form
   _orderTest = async () => {
     this.props.navigation.navigate('Location');

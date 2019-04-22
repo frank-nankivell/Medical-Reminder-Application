@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
   columnInterval: {
     flexDirection: 'row',
     alignItems: 'center',
-
   },
   columnDosage:  {
     flexDirection: 'row',
