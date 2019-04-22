@@ -30,7 +30,7 @@ class List extends Component {
   };
 
   render() {
-    const { value, dosage, endDate, notes, deleteItem, id, isCompleted, showItem} = this.props;
+    const { value, dosage, interval, endDate, notes, deleteItem, id, isCompleted, showItem} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.column}>
@@ -57,6 +57,21 @@ class List extends Component {
           >
             {value}
             </Text>
+              <View style={styles.columnInterval}>
+                <Text
+                style={[
+                  styles.text,
+                  isCompleted
+                    ? {
+                        color: itemListTextStrike,
+                        textDecorationLine: 'line-through'
+                      }
+                    : { color: itemListText }
+                ]}
+                >
+                .    Interval  {interval}
+              </Text>
+            </View>
           </View>
           <TouchableOpacity onPressOut={() => showItem(value, notes, endDate, dosage)}>
           <View style={styles.columnDosage}>
@@ -65,9 +80,19 @@ class List extends Component {
                 size={24}
                 color={pillColor}
               />
-             
+          
+            
           <Text
-            style={styles.text}>
+              style={[
+                styles.text,
+                isCompleted
+                  ? {
+                      color: itemListTextStrike,
+                      textDecorationLine: 'line-through'
+                    }
+                  : { color: itemListText }
+              ]}
+              >
             {dosage}
           </Text>
         </View>
@@ -116,6 +141,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: width / 1.5
+  },
+  columnInterval: {
+    flexDirection: 'row',
+    alignItems: 'center',
+
   },
   columnDosage:  {
     flexDirection: 'row',

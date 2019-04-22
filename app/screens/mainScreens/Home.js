@@ -18,8 +18,7 @@ import {
 
 import colors from '../../constants/colors';
 const { height, width } = Dimensions.get('window');
-
-//import List from '../../components/List';
+import List from '../../components/List';
 import bgImage from '../../images/background1.jpg';
 import logo from '../../images/logo.png'
 import Header from '../../components/Header';
@@ -28,12 +27,21 @@ const headerTitle = 'Your Medication Reminders';
 const  { width: WIDTH} = Dimensions.get('window');
 
 class Home extends Component {
-    state = {
-      loadingItems: false,
-      allItems: {},
+  constructor(props) {
+    super(props);
+    this.state = {
+ 
       currentDate: null,
+
       isCompleted: false,
+
+      allItems: {},
+      loadingItems: false,
+
+      todayItems: {},
+      loadingPosition: 0
     };
+  }
 
 
   componentDidMount = () => {
@@ -44,16 +52,32 @@ class Home extends Component {
 		try {
       const allItems = await AsyncStorage.getItem('MedicationReminder');
 			this.setState({
+        loadingPosition: 1,
         loadingItems: true,
-        currentDate: this.getCurrentDate(),
 				allItems: JSON.parse(allItems)|| {}
       });
       console.log()
-      console.log(allItems,'items to render') // check that items have loaded on start
+   //  console.log(allItems,'items to render') // check that items have loaded on start
 		} catch (err) {
 			console.log(err,'failure');
 		}
   };
+
+    _loadingToday = async () => {
+      try {
+        var allItems, currentDate, todayItems; 
+        allItems = await AsyncStorage.getItem('MedicationReminder');
+        currentDate = this.getCurrentDate();
+        todayItems = allItems.filter((item) => item.createdAt === currentDate )
+        this.setState({
+          todayItems: todayItems,
+          loadingToday: true,
+        })
+        console.log(todayItems, 'today Items')
+         } catch (err) {
+           console.log(err,'failure');
+         }
+       };
 
   _getWeekReminders = () => {
   };
@@ -83,13 +107,6 @@ class Home extends Component {
     _getDayReminders = () => {
     };
 
-      /*const CurrentDate = this.state.currrentDate;
-      var todayItems;
-      this.setState({
-        day: true,
-        todayItems: JSON.parse(todayItems) || {}
-      })
-    }; */
 
     deleteItem = id => {
       this.setState(prevState => {
@@ -152,7 +169,7 @@ class Home extends Component {
         
     _navReminder = () => {
       try {
-        this.props.navigation.navigate('Auth');
+        this.props.navigation.navigate('Medication');
       } catch (error) {
         // Error retrieving data
         console.log(error.message);
@@ -168,7 +185,7 @@ class Home extends Component {
     };
 
 render() {
-    const { loadingItems, allItems } = this.state;
+    const { loadingItems, allItems, loadingPosition} = this.state;
     if(loadingItems==true) {
         return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
@@ -182,7 +199,7 @@ render() {
               style={styles.buttonDay}
               title="Reminders for today" 
               color="white" 
-              onPress={this._getDayReminders}>
+              onPress={this._loadingToday}>
             </Button>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonWeek}>
@@ -196,7 +213,7 @@ render() {
         </View>
 
         {
-          allItems === undefined || allItems.length == 0  ?
+           allItems.length != 0  && loadingPosition == 1?
        
         <View style={styles.list}>
             <ScrollView contentContainerStyle={styles.scrollableList}>
@@ -311,8 +328,6 @@ const styles = StyleSheet.create ({
           justifyContent: 'center',
 
         },
-
-
         buttonDay: {
           flex: 1,
           opacity: 0.75,
@@ -347,11 +362,12 @@ const styles = StyleSheet.create ({
           backgroundColor: colors.green1,
         },
         list: {
-          flexDirection: 'row',
-          flex: 0.5,
+          width: WIDTH -50,
+          paddingBottom: 250,
+          flexDirection: 'column',
+          flex: 1,
           alignItems: 'center',
           marginBottom: 30,
-          backgroundColor: colors.lightWhite,
           color: 'black',
           fontSize: 20,
           paddingVertical: 20

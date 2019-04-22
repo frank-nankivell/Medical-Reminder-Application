@@ -126,7 +126,7 @@ class Medication extends Component {
                       createdAt: this.getCurrentDate(),
                     }
                   };
-                 // console.log(newItemObject);
+                  console.log('check output', newItemObject);
                   const newState = {
                     ...prevState,
                     inputValue: '',
@@ -143,7 +143,6 @@ class Medication extends Component {
                     }
                   };
                   this.saveItems(newState.allItems);
-                 // this.props.navigation.navigate('Home');
                   return { ...newState };
  
                 
