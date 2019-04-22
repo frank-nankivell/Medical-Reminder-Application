@@ -1,43 +1,44 @@
-## 1 Participant application - v.0.01
+## 1 Medical Reminder Application (Participant application)
+
+This is a simple application that provides reminders to users about their medication, and locations to local pharmacies. 
+
+## 2 Start application with XCode IOS simulator
+
+IOS simulator - see docs:  https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/iOS_Simulator_Guide/Introduction/Introduction.html
+
+However many other simulators could be used. Please use IOS as some components may error on Android simulators. 
+
+The application has been built on EXPO, Node JS and react-native, react-native, expo-cli and node must be be first installed. 
 
 
-## 2 Start application within development server
+To run / update and access the code for the application please follow the below steps. 
 
-to open
+2.1 git clone: [insert url / currently private repo]
+
+2.2 npm install
+
+2.3 to open:
 'open -a Simulator; expo start'
 
-^ due to a bug with expo and xcode simulator currently not finished.
+The above ^ is due to a bug with expo and xcode simulator currently not remediated.
+
 
 ## 3 Documentation
 
-All documentation for the applications is found within '/doc' folder
+All documentation for the applications is found within '/doc' folder. 
 
 ### 3.1 ) ADR' - Architectural decision records
-All ADRs for the application are recorede within the 'adr' sub foler within 'doc/adr'
+
+All ADRs for the application are recoreded within the 'adr' sub foler within 'doc/adr'
 
 ADR's set out choice of technologies and present reasoning as to why the application was developed in a certain way.
 
+They are explained further through the record: doc/adr/001-record-archicture-decisions.md
+
 ### 3.2 ) About 
 
-The about section sets out the application use acase,  the design of the application and a brief overview of how the applications code is used to deliver the application.
+The about section sets out the application use cases, the design of the application and a brief overview of how the applications code is used to deliver the application.
+
+## 4 Enjoy :)
 
 
-
-Notes: 
-
-#This api call is for rare disease
-
-https://api.nhs.uk/data/services/srv0046/postcode/tq25aw/?distance=50
-
-GET https://api.nhs.uk/data/services/srv0046/postcode/{postcode}/?{distance} HTTP/1.1
-Host: api.nhs.uk
-subscription-key: key 
-
-
-#This api call is for cancer
-
-https://api.nhs.uk/data/services/srv0118/postcode/{postcode}/?distance={distance}
-
-GET https://api.nhs.uk/data/services/srv0118/postcode/{postcode}/?distance={distance} HTTP/1.1
-Host: api.nhs.uk
-subscription-key: key 

@@ -79,45 +79,6 @@ class LocationHome extends React.Component {
       });
   };
 
-  // on mount find location and fetchmarkerdata
-/*
-
-  fetchMarkerData(lat, lng) {
-    // Creation of url string for google maps as per documentatiom https://developers.google.com/places/
-   /* var googlePlace='https://maps.googleapis.com/maps/api/place/findplacefromtext/json?'
-    var input = 'input=Hospital';
-    var inputtype = 'inputtype=textquery';
-    var type='type=hospital'
-    var fields = 'fields=formatted_address,name,opening_hours,geometry';
-    var distance = '5000@'
-    var locationbias = 'locationbias=circle:'+ distance + lat + ','+ lng;
-    var key= '&key='+ k;
-    var url = googlePlace + '&' + input + '&' + inputtype +'&'+  type + '&' + fields + '&' + locationbias + '&' + key ;
-*/
-//
-/*
-var newurl = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?&input=Hospital&inputtype=textquery&type=hospital&fields=formatted_address,name,opening_hours,geometry&locationbias=circle:2000@37.33659906,-122.08220411&key=AIzaSyDPC3aFjcV7EIznzmBPT3zaYqNlizE6PsA';
-    // Fetch call to Google
-  //  console.log('url to fetch',url)
-      fetch(newurl)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log('printing response',responseJson.candidates)
-        this.setState({ 
-          isLoading: false,
-          googleError: false,
-          markers: responseJson.candidates,
-        });
-      })
-      //console.log(responseJson)
-      .catch((error) => {
-        console.log(error);
-        this.setState({ googleError: error.message })
-      });
-};
-*/
-
-  // renders list of hospitals on the map
 render() {
   const region = this.state.location;
   if (this.state.isLoading == true && this.state.location == null )   {

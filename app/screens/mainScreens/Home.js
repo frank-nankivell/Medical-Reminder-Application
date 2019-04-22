@@ -190,7 +190,7 @@ class Home extends Component {
 
 
 render() {
-    const { loadingItems, allItems, loadingPosition, empty} = this.state;
+    const { loadingItems, allItems,} = this.state;
     if(loadingItems== true) {
         return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
@@ -263,8 +263,23 @@ render() {
         </TouchableOpacity>
       </View>
         {
-           allItems != null   ?
-       
+           allItems && allItems.length > 0 ?
+          
+          <View style={styles.reminderList}>
+           <Text style={styles.standardText}> 
+                 No Reminders currently Set
+             </Text>
+             <TouchableOpacity style={styles.buttonNav}>
+             <Button 
+             style={styles.buttonWeek}
+               title="Make a reminder now" 
+               color="rgba(0,0,0,0.5)" 
+               onPress={this._navReminder}>
+             </Button>
+             </TouchableOpacity>
+            </View>
+        :
+        
         <View style={styles.list}>
             <ScrollView contentContainerStyle={styles.scrollableList}>
               {Object.values(allItems)
@@ -279,24 +294,9 @@ render() {
                     incompleteItem={this.incompleteItem}
                   />
                 ))}
-        </ScrollView>
-        </View>
-        
-      :   
-        <View style={styles.reminderList}>
-          <Text style={styles.standardText}> 
-                No Reminders currently Set
-            </Text>
-            <TouchableOpacity style={styles.buttonNav}>
-            <Button 
-            style={styles.buttonWeek}
-              title="Make a reminder now" 
-              color="rgba(0,0,0,0.5)" 
-              onPress={this._navReminder}>
-            </Button>
-            </TouchableOpacity>
-           </View>
-      }
+          </ScrollView>
+          </View>
+        }
              
         <View style ={styles.buttonStyler}>
             <Button color='white'
