@@ -167,7 +167,7 @@ class Medication extends Component {
 
             <View style={styles.centered}>
               <Text style={
-                styles.text}> Below enter your medication dosage and end date to create a reminder </Text>
+                styles.headerText}> Enter your medication details to create a reminder :) </Text>
             </View>
 
             <View style={styles.inputContainer}>
@@ -285,6 +285,11 @@ class Medication extends Component {
 
 
 const styles = StyleSheet.create ({
+  headerText: {
+    fontSize: 25,
+    color: colors.green1,
+    textAlign: 'center',
+  },
     text: 
         {
             fontSize: 50, 

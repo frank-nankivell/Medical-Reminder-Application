@@ -34,25 +34,20 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentDate: null,
       modalVisible: false,
       isCompleted: false,
-
+      empty: false,
       allItems: {},
       loadingItems: false,
-
-      todayItems: {},
-      loadingPosition: 0
     };
   }
-
 
   componentDidMount = () => {
     this._onFocusListener = this.props.navigation.addListener('didFocus', (payload) => {this.loadingItems();
     });
   };
 
-    loadingItems = async () => {
+  loadingItems = async () => {
 		try {
       const allItems = await AsyncStorage.getItem('MedicationReminder');
 			this.setState({
@@ -64,7 +59,8 @@ class Home extends Component {
    //  console.log(allItems,'items to render') // check that items have loaded on start
 		} catch (err) {
 			console.log(err,'failure');
-		}
+    }
+    
   };
 
   setModalVisible(visible) {
@@ -194,8 +190,8 @@ class Home extends Component {
 
 
 render() {
-    const { loadingItems, allItems, loadingPosition} = this.state;
-    if(loadingItems==true) {
+    const { loadingItems, allItems, loadingPosition, empty} = this.state;
+    if(loadingItems== true) {
         return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
         <View style={styles.centered}>
@@ -246,7 +242,7 @@ render() {
         </Modal>
         </View>
 
-        <View style={styles.modalContainer}>
+        <View top middle  style={styles.modalContainer}>
         <TouchableOpacity
         style={
           styles.buttonHelp}
@@ -267,7 +263,7 @@ render() {
         </TouchableOpacity>
       </View>
         {
-           allItems.length != 0  && loadingPosition == 1?
+           allItems != null   ?
        
         <View style={styles.list}>
             <ScrollView contentContainerStyle={styles.scrollableList}>
@@ -315,6 +311,7 @@ render() {
             )} else 
             return (
                 <ImageBackground source={bgImage} style={styles.backgroundContainer}>
+                <Text> database error </Text>
                 <ActivityIndicator size='large' color="white" />
             </ImageBackground>
         );
@@ -377,6 +374,9 @@ const styles = StyleSheet.create ({
               }
             },
           })
+        },
+        buttonHelp: {
+          
         },
         columnHelpView: {
           flexDirection: 'row',
@@ -453,6 +453,9 @@ const styles = StyleSheet.create ({
           justifyContent: 'center',
 
         },
+        centered: {
+          marginBottom: 10,
+        },
         buttonDay: {
           flex: 1,
           opacity: 0.75,
@@ -484,7 +487,7 @@ const styles = StyleSheet.create ({
           marginTop: 40,
           height: 45,
           borderRadius: 45,
-          backgroundColor: colors.green1,
+          backgroundColor: 'white',
         },
         list: {
           width: WIDTH -50,
@@ -510,7 +513,7 @@ const styles = StyleSheet.create ({
         width: WIDTH -55,
         height: 45,
         borderRadius: 45,
-        backgroundColor: '#4EEEFF',
+        backgroundColor: 'white',
         justifyContent: 'center',
         marginTop: 30,
         opacity: 1,

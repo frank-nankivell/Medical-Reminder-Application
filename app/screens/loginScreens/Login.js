@@ -60,8 +60,10 @@ export default class Login extends React.Component {
     return (
       
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-      <HeaderBackButton style={styles.HeaderBackButton} onPress={() => this.props.navigation.navigate('Splash')}>
+      <View style={styles.HeaderBackButton}>
+      <HeaderBackButton onPress={() => this.props.navigation.navigate('Splash')}>
       </HeaderBackButton>
+      </View>
 
         <View style ={styles.logoContainer}>
           <Text style={styles.logoText}> Medical reminder app </Text>
@@ -109,7 +111,9 @@ export default class Login extends React.Component {
 };
 const styles = StyleSheet.create({
   HeaderBackButton: {
-    flex: 1, flexDirection: 'row'
+    position: 'absolute',
+    left: 0,
+    top: 0,
   },
   btnBack: {
     alignSelf: 'flex-end',
