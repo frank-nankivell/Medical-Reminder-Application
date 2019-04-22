@@ -2,7 +2,6 @@ import React from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import thirdcolor from '../../constants/colors'
 import Icon from 'react-native-vector-icons/Ionicons'
-import floatingBackButton from '../../components/floatingBackButton';
 import { withOrientation, NavigationActions, HeaderBackButton} from 'react-navigation';
 
 import { StyleSheet, 

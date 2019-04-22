@@ -1,15 +1,15 @@
 ## 1 Medical Reminder Application (Participant application)
 
-This is a simple application that provides reminders to users about their medication, and locations to local pharmacies. 
+This is a simple application that provides reminders to users to take their medication, and locations to local pharmacies. 
 
 ## 2 Start application with XCode IOS simulator
 
-IOS simulator - see docs:  https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/iOS_Simulator_Guide/Introduction/Introduction.html
+This app has been developed with the XCODE IOS simulator - see docs:  https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/iOS_Simulator_Guide/Introduction/Introduction.html
 
-However many other simulators could be used. Please use IOS as some components may error on Android simulators. 
+However many other simulators could be used. However please use an IOS as some components may error on Android simulators. 
 
-The application has been built on EXPO, Node JS and react-native, react-native, expo-cli and node must be be first installed. 
-
+The application has been built on EXPO, Node JS and react-native.
+React-native the Expo-cli and Node must be be first installed before running the app.
 
 To run / update and access the code for the application please follow the below steps. 
 

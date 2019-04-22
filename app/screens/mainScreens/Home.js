@@ -5,9 +5,7 @@ import {
     Text,
     View,
     Modal,
-    TouchableHighlight,
     TouchableOpacity,
-    Image,
     Button,
     AlertIOS,
     Platform,
@@ -23,10 +21,8 @@ import colors from '../../constants/colors';
 const { height, width } = Dimensions.get('window');
 import List from '../../components/List';
 import bgImage from '../../images/background1.jpg';
-import logo from '../../images/logo.png'
 import pillColor from '../../constants/colors';
 import Header from '../../components/Header';
-import { Title } from 'native-base';
 const headerTitle = 'Your Medication Reminders';
 const  { width: WIDTH} = Dimensions.get('window');
 

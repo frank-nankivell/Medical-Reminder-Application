@@ -3,29 +3,22 @@ import Header from '../../components/Header';
 import { LinearGradient } from 'expo';
 import color from '../../constants/colors';
 import lightWhite from '../../constants/colors';
-import List from '../../components/List';
-import ButtonNew from '../../components/Button';
-import InputMedication from '../../components/InputMedication';
 import DatePicker from 'react-native-datepicker'
 import uuid from 'uuid/v1';
 import itemListText from '../../constants/colors';
 import colors from '../../constants/colors';
-import InputDate from '../../components/InputDate'
 import { Calendar, 
         CalendarList, 
         Agenda } from 'react-native-calendars'
-import InputText from '../../components/InputText';
 import bgImage from '../../images/background1.jpg';
 import {
     Button,
-    DatePickerIOS,
     ScrollView,
     Dimensions,
     Text,
     View,
     TextInput,
     Alert,
-    Picker,
     TouchableOpacity,
     ActivityIndicator,
     AsyncStorage,

@@ -54,7 +54,7 @@ export default class Splash extends Component {
                     <Button
                     raised
                     style ={styles.logo}
-                    title = "Find your local healthcare centre"
+                    title = "Find your local Pharmacy"
                     color="rgba(0,0,0,0.5)"
                     onPress={this._orderTest.bind(this)}
                     />
@@ -63,7 +63,7 @@ export default class Splash extends Component {
                     <Button
                     raised
                     style ={styles.buttonStyler}
-                    title = "Login to see your reminders"
+                    title = "Login to see your Reminders"
                     color="rgba(0,0,0,0.5)"
                     onPress={this._navSignIn.bind(this)}
                     />
