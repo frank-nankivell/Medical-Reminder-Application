@@ -3,7 +3,7 @@ import {Text,LogoTitle, Button, SafeAreaView, AsyncStorage, StyleSheet, Activity
 import {MapView, Marker, Location, Permissions} from 'expo';
 import {Constants} from 'expo';
 import { ScrollView, RotationGestureHandler } from 'react-native-gesture-handler';
-const k = 'AIzaSyDPC3aFjcV7EIznzmBPT3zaYqNlizE6PsA';
+//const k = 'insertGoogleMapsAPI';
 import bgImage from '../../images/background1.jpg';
 import { lastFromTime } from 'uuid-js';
 import { isLoading } from 'expo-font';

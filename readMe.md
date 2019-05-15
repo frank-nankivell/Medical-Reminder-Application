@@ -17,7 +17,13 @@ To run / update and access the code for the application please follow the below 
 
 2.2 npm install
 
-2.3 to open:
+2.3 Create a google Maps API Key https://developers.google.com/maps/documentation/javascript/get-api-key
+
+2.4 Implement restrictions as best practice https://console.cloud.google.com/google/maps-apis/
+
+2.5 Enter the key in file /screens/orderScreen/LocationHome.js line 6
+
+2.6 to open:
 'open -a Simulator; expo start'
 
 The above ^ is due to a bug with expo and xcode simulator currently not remediated.

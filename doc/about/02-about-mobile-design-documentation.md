@@ -1,4 +1,4 @@
-#Why it is suited to be a mobile application?
+# Why it is suited to be a mobile application?
 
 - 1) Medicines are often taken in a location on the move. The most frequented locations are beds and kitchens, (due to medication needing to be taken withn food), however medicine can be taken almost anywhere! Designing an applicaiton that is able to as close to the user when they take their medication as possible is pivotal. 
 

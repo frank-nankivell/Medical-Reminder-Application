@@ -1,4 +1,4 @@
-#What technology has been used to create the app and why?
+# What technology has been used to create the app and why?
 
 The app has been built on Javascript using Node JS and React-Native through EXPO.
 
